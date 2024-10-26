@@ -40,9 +40,7 @@ function App() {
     "Charlie Puth",
     "The Chainsmokers",
     "Shawn Mendes",
-];
-
-  
+  ];
 
   async function getTracks(event) {
     if (event) event.preventDefault();
@@ -52,8 +50,9 @@ function App() {
       let data = await fetch(
         `${process.env.REACT_APP_API_URL}/search/songs?query=${
           keyword === "" ? "hindi" : keyword
-        }`
+        }&limit=40`
       );
+      
       if (!data.ok) throw new Error("Network response was not ok");
       let convertedData = await data.json();
       setTracks(convertedData.data.results);
@@ -98,7 +97,7 @@ function App() {
     setKeyword(tag);
     try {
       let data = await fetch(
-        `${process.env.REACT_APP_API_URL}/search/songs?query=${tag}`
+        `${process.env.REACT_APP_API_URL}/search/songs?query=${tag}&limit=40`
       );
       if (!data.ok) throw new Error("Network response was not ok");
       let convertedData = await data.json();
