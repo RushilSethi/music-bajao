@@ -1,38 +1,100 @@
-.App {
-  text-align: center;
+body {
+  background-color: #1a1a1a; 
+  color: #f1f1f1; 
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.navbar {
+  background-color: #2c2c2c;
+  color: #f1f1f1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.navbar-brand,
+.nav-link {
+  color: #f1f1f1;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.nav-link:hover {
+  color: #ff6b35;
+}
+
+.btn-outline-success {
+  color: #ff6b35;
+  border-color: #ff6b35;
+}
+
+.btn-outline-success:hover {
+  background-color: #ff6b35;
+  color: #1a1a1a;
+}
+
+.card {
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+  border: none;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
+
+.card-title {
+  color: #ff6b35;
+}
+
+.card-body {
+  color: #f1f1f1;
+}
+
+.dropdown-menu {
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+}
+
+.dropdown-item {
+  color: #f1f1f1;
+}
+
+.dropdown-item:hover {
+  background-color: #3c3c3c;
+  color: #ff6b35;
+}
+
+.spinner-border {
+  color: #ff6b35;
+}
+
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+.player-info {
+  display: flex;
+  cursor: pointer;
+}
+
+.player-img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.player-controls {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 300px;
 }
 
-.App-link {
-  color: #61dafb;
+.tags .badge {
+  font-size: 0.9rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
