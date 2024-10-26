@@ -2,6 +2,8 @@
 
 This is an API-based online music player that uses a 3rd party Saavn API to stream music without ads and on different quality bitrates to save internet data. The music player is built using React (JSX), CSS3, and Bootstrap, allowing users to search, play, pause, skip, and shuffle songs from various genres, languages, and artists. The music player also displays the song title, artist, album art, and lyrics.
 
+Live Demo: https://music-bajao.vercel.app/ 
+
 ## Disclaimer
 
 Please note that this project has not been maintained since its creation in June 2023. Due to changes and updates in the Saavn API, the functionality of this music player may no longer work as intended. Use it at your own discretion and be aware that certain features, such as song downloads, have been disabled due to the API shutdown.
