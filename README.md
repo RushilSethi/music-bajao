@@ -36,7 +36,7 @@ This project was inspired by a code-along video by Web Dev Simplified on YouTube
 
 ## Purpose
 
-This project was created as a report for my college subject Web Development. I learned a lot from this project about web development, music streaming, API integration, and responsive design. I hope you find this project useful and interesting.
+This project initially started of as a report for my college subject Web Development. I learned a lot from this project about web development, music streaming, API integration, and responsive design. I hope you find this project useful and interesting.
 
 ## Copyright & Credits
 
