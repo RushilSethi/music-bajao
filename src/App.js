@@ -13,9 +13,10 @@ function App() {
 
 
   const tags = [
-    "Hindi Songs",
+    "Hindi",
     "English Songs",
     "Punjabi Hits",
+    "Bollywood Hits",
     "Old Songs",
     "Workout Mix",
     "Arijit Singh",
@@ -46,7 +47,7 @@ function App() {
   ];
 
   const hindiTags = [
-    "Hindi Songs", "Arijit Singh", "KK", "Neha Kakkar", "Badshah",
+    "Hindi", "Bollywood Hits", "Arijit Singh", "KK", "Neha Kakkar", "Badshah",
     "Atif Aslam", "Shreya Ghoshal", "Harrdy Sandhu", "Darshan Raval",
     "Armaan Malik", "Old Songs", "Workout Mix"
   ];
