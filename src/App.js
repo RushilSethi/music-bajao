@@ -9,6 +9,9 @@ function App() {
   const [selectedBitrate, setSelectedBitrate] = useState(3);
   const [nowPlaying, setNowPlaying] = useState(null);
   const audioRef = useRef(null);
+  const [selectedLanguage, setSelectedLanguage] = useState("Hindi");
+
+
   const tags = [
     "Hindi Songs",
     "English Songs",
@@ -41,6 +44,30 @@ function App() {
     "The Chainsmokers",
     "Shawn Mendes",
   ];
+
+  const hindiTags = [
+    "Hindi Songs", "Arijit Singh", "KK", "Neha Kakkar", "Badshah",
+    "Atif Aslam", "Shreya Ghoshal", "Harrdy Sandhu", "Darshan Raval",
+    "Armaan Malik", "Old Songs", "Workout Mix"
+  ];
+  
+  const englishTags = [
+    "English Songs", "Billie Eilish", "Justin Bieber", "Imagine Dragons",
+    "Ed Sheeran", "Taylor Swift", "Sia", "The Weeknd", "Rihanna",
+    "One Direction", "Michael Jackson", "Charlie Puth", "The Chainsmokers",
+    "Shawn Mendes", "Workout Mix"
+  ];
+  
+  const punjabiTags = [
+    "Punjabi Hits", "Guru Randhawa", "Karan Aujla", "Yo Yo Honey Singh",
+    "Harrdy Sandhu", "Workout Mix"
+  ];
+
+  const tagsToDisplay = selectedLanguage === "Hindi"
+    ? hindiTags
+    : selectedLanguage === "English"
+    ? englishTags
+    : punjabiTags;
 
   async function getTracks(event) {
     if (event) event.preventDefault();
@@ -226,8 +253,65 @@ function App() {
 
       {/* Tag section below the search bar */}
       <div className="container my-2">
+      {/* Dropdown only for Small Screens */}
+      <div className="d-sm-none d-block mb-3 dropdown">
+        <button
+          className="btn btn-dark dropdown-toggle w-50"
+          type="button"
+          id="dropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {selectedLanguage} Top Picks
+        </button>
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <li>
+            <a
+              className="dropdown-item"
+              href="#"
+              onClick={() => setSelectedLanguage("Hindi")}
+            >
+              Hindi
+            </a>
+          </li>
+          <li>
+            <a
+              className="dropdown-item"
+              href="#"
+              onClick={() => setSelectedLanguage("English")}
+            >
+              English
+            </a>
+          </li>
+          <li>
+            <a
+              className="dropdown-item"
+              href="#"
+              onClick={() => setSelectedLanguage("Punjabi")}
+            >
+              Punjabi
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      {/* Render All Tags on Larger Screens */}
+      <div className="d-none d-sm-flex flex-wrap tags">
+        {tags.map((tag, index) => (
+          <button
+            key={index}
+            className="btn btn-outline-secondary me-2 mb-2"
+            onClick={(event) => handleTagClick(event, tag)}
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
+
+      {/* Render Tags Conditionally Based on Dropdown Selection for Small Screens */}
+      <div className="d-sm-none tags">
         <div className="d-flex flex-wrap">
-          {tags.map((tag, index) => (
+          {tagsToDisplay.map((tag, index) => (
             <button
               key={index}
               className="btn btn-outline-secondary me-2 mb-2"
@@ -238,6 +322,7 @@ function App() {
           ))}
         </div>
       </div>
+    </div>
 
       <main className="container my-4">
         {error && (
