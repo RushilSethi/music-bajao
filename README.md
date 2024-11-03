@@ -12,6 +12,7 @@ Please note that this project has not been maintained since its creation in June
 
 - API-based music streaming using Saavn API
 - No ads or interruptions
+- Save your favorite songs and they stay there when you come back!
 - Different quality bitrates to choose from 
 - Search, play, pause, and skip songs
 - Display song title, artist, album art, and lyrics
