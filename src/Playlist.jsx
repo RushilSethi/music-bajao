@@ -74,7 +74,7 @@ const PlaylistPage = () => {
   );
   
 
-  const renderMusicPlayer = () => <MusicPlayer currentIndex={currentFavIndex} setCurrentIndex={setCurrentFavIndex}/>;
+  const renderMusicPlayer = () => <MusicPlayer currentIndex={currentFavIndex} setCurrentIndex={setCurrentFavIndex} audioRef={audioRef}/>;
 
   return (
     <div className="container-fluid playlist-page">

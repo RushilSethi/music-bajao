@@ -7,7 +7,22 @@ import { useAppContext } from './AppContext';
 
 
 function App() {
-  const { keyword, setKeyword, tracks, setTracks, loading, setLoading,  error, setError, selectedBitrate, nowPlaying, getTracks, handleBitrateChange, handlePlay, audioRef } = useAppContext();
+  const {
+    keyword,
+    setKeyword,
+    tracks,
+    setTracks,
+    loading,
+    setLoading,
+    error,
+    setError,
+    selectedBitrate,
+    nowPlaying,
+    getTracks,
+    handleBitrateChange,
+    handlePlay,
+    audioRef,
+  } = useAppContext();
 
   useEffect(() => {
     getTracks();
@@ -95,6 +110,47 @@ function App() {
           </div>
         </div>
       </nav>
+
+      {/* Music Player Widget */}
+      <div className="music-player">
+        <div className="player-info d-flex align-items-center">
+          {nowPlaying ? (
+            <>
+              <img
+                src={nowPlaying.image[1].link}
+                alt="cover"
+                className="player-img"
+              />
+              <div className="player-details">
+                <h5>{nowPlaying.name}</h5>
+                <p>{nowPlaying.primaryArtists}</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <img
+                src={`${process.env.PUBLIC_URL}/bajao_icon.png`}
+                alt="cover"
+                className="player-img"
+              />
+              <div className="player-details">
+                <h5>Now Playing</h5>
+                <p>Artist Name</p>
+              </div>
+            </>
+          )}
+        </div>
+        <div className="player-controls">
+          <audio ref={audioRef} autoPlay controls controlsList="nodownload">
+            <source
+              src={
+                nowPlaying ? nowPlaying.downloadUrl[selectedBitrate].link : ""
+              }
+            />
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </div>
 
       <Routes>
         <Route path="/" element={<HomePage />} />

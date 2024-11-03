@@ -1,135 +1,126 @@
-import React, { useEffect, useState } from 'react';
-import { useAppContext } from './AppContext';
-import { FaPlay, FaPause, FaVolumeUp, FaStepBackward, FaStepForward } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import { useAppContext } from "./AppContext";
+import {
+  FaPlay,
+  FaPause,
+  FaVolumeUp,
+  FaStepBackward,
+  FaStepForward,
+} from "react-icons/fa";
 
-const MusicPlayer = ({ currentIndex, setCurrentIndex }) => {
-  const { favorites, nowPlaying, handlePlay, selectedBitrate, audioRef } = useAppContext();
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(1);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (audio) {
-      isPlaying ? audio.play() : audio.pause();
-
-      const updateProgress = () => {
-        setProgress((audio.currentTime / audio.duration) * 100);
-      };
-      audio.addEventListener('timeupdate', updateProgress);
-
-      return () => audio.removeEventListener('timeupdate', updateProgress);
-    }
-  }, [isPlaying, audioRef]);
-
-  useEffect(() => {
-      handlePlay(favorites[currentIndex]);
-      setIsPlaying(true);
-  }, [currentIndex]);
-
-  const handlePlayPause = () => setIsPlaying(!isPlaying);
+const MusicPlayer = ({ currentIndex = 0, setCurrentIndex, audioRef }) => {
+  const { favorites, nowPlaying, handlePlay, selectedBitrate } =
+    useAppContext();
+  const [playRandom, setPlayRandom] = useState(false);
 
   const handlePrevSong = () => {
-    const newIndex = currentIndex === 0 ? favorites.length - 1 : currentIndex - 1;
+    const newIndex =
+      currentIndex === 0 ? favorites.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
+
+    // Check if the new index is valid
+    if (favorites[newIndex]) {
+      handlePlay(favorites[newIndex]);
+    } else {
+      console.error("Favorite track not found for index:", newIndex);
+    }
   };
 
   const handleNextSong = () => {
-    const newIndex = (currentIndex + 1) % favorites.length;
-    setCurrentIndex(newIndex);
-  };
-
-  const handleVolumeChange = (event) => {
-    const newVolume = event.target.value;
-    setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
+    let newIndex;
+    if (playRandom) {
+      newIndex = Math.floor(Math.random() * favorites.length);
+    } else {
+      newIndex = (currentIndex + 1) % favorites.length;
     }
+    setCurrentIndex(newIndex);
+    handlePlay(favorites[newIndex]);
   };
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-  };
+  // automatically play next song based on playRandom Value
+  useEffect(() => {
+    const audioElement = audioRef.current;
 
-  const audioSource = nowPlaying?.downloadUrl?.[selectedBitrate]?.link;
+    if (audioElement) {
+      const handleEnded = () => {
+        if (favorites.length > 0) {
+          let newIndex;
+          if (playRandom) {
+            newIndex = Math.floor(Math.random() * favorites.length);
+          } else {
+            newIndex = (currentIndex + 1) % favorites.length;
+          }
+          setCurrentIndex(newIndex);
+          handlePlay(favorites[newIndex]);
+        }
+      };
+      audioElement.addEventListener("ended", handleEnded);
+      return () => {
+        audioElement.removeEventListener("ended", handleEnded);
+      };
+    }
+  }, [audioRef, favorites, currentIndex, playRandom]);
 
   return (
     <div
       className="d-flex flex-column justify-content-center align-items-center bg-dark rounded shadow-lg"
-      style={{ width: '50vw', height: '80vh', margin: '20px auto' }} // Set dimensions
+      style={{ width: "50vw", height: "80vh", margin: "20px auto" }} // Set dimensions
     >
-      {nowPlaying ? (
-        <div className="text-center" style={{ overflowY: 'auto', height: '100%' }}>
-          <img
-            src={nowPlaying.image[2].link}
-            alt="cover"
-            className="img-fluid rounded mb-3"
-            style={{ maxHeight: '250px' }} // Controlled height for the image
-          />
-          <h4 className="text-light font-weight-bold mb-1">{nowPlaying.name}</h4>
-          <p className="text-muted mb-4">{nowPlaying.primaryArtists}</p>
-
-          <div className="d-flex justify-content-center mb-3">
-            <button className="btn btn-secondary mx-2" onClick={handlePrevSong}>
-              <FaStepBackward />
-            </button>
-            <button className="btn btn-success mx-2" onClick={handlePlayPause}>
-              {isPlaying ? <FaPause /> : <FaPlay />}
-            </button>
-            <button className="btn btn-secondary mx-2" onClick={handleNextSong}>
-              <FaStepForward />
-            </button>
-          </div>
-
-          <div className="mb-3">
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={progress}
-              onChange={(e) => {
-                const newTime = (audioRef.current.duration / 100) * e.target.value;
-                audioRef.current.currentTime = newTime;
-                setProgress(e.target.value);
-              }}
-              className="form-range"
+      <div className="text-center mt-4">
+        {nowPlaying ? (
+          <>
+            <img
+              src={nowPlaying.image[2].link}
+              alt="cover"
+              className={`img-fluid mb-3 spin`} // Apply spin class if playing
+              style={{
+                maxHeight: "250px",
+                borderRadius: "50%",
+                width: "250px",
+                height: "250px",
+              }} // Circular image
             />
-            <div className="d-flex justify-content-between text-muted">
-              <span>{audioRef.current ? formatTime(audioRef.current.currentTime) : '0:00'}</span>
-              <span>{audioRef.current ? formatTime(audioRef.current.duration) : '0:00'}</span>
-            </div>
-          </div>
-
-          <div className="d-flex align-items-center">
-            <FaVolumeUp className="text-light me-2" />
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={handleVolumeChange}
-              className="form-range"
-              style={{ width: '120px' }}
+            <h4 className="text-light font-weight-bold mb-1">
+              {nowPlaying.name}
+            </h4>
+            <p className="text-muted mb-4">{nowPlaying.primaryArtists}</p>
+          </>
+        ) : (
+          <>
+            <img
+              src="placeholder-image-url.jpg" // Placeholder image URL
+              alt="placeholder cover"
+              className="img-fluid mb-3"
+              style={{
+                maxHeight: "250px",
+                borderRadius: "50%",
+                width: "250px",
+                height: "250px",
+              }} // Circular image
             />
-          </div>
+            <h4 className="text-light font-weight-bold mb-1">Song Name</h4>
+            <p className="text-muted mb-4">Artist Name</p>
+          </>
+        )}
 
-          <audio ref={audioRef} autoPlay>
-            {audioSource ? (
-              <source src={audioSource} type="audio/mpeg" />
-            ) : (
-              <p className="text-muted">Your browser does not support the audio element or the source is unavailable.</p>
-            )}
-          </audio>
+        <div className="d-flex justify-content-center mb-3">
+          <button className="btn btn-secondary mx-2" onClick={handlePrevSong}>
+            <FaStepBackward />
+          </button>
+          <button className="btn btn-secondary mx-2" onClick={handleNextSong}>
+            <FaStepForward />
+          </button>
+          {/* add loop or random toggle button here */}
+          <button
+            className="btn btn-secondary mx-2"
+            onClick={() => setPlayRandom(!playRandom)}
+          >
+            {playRandom ? "Switch to Loop" : "Switch to Random"}
+          </button>
         </div>
-      ) : (
-        <p className="text-muted text-center">Please select a song to play.</p>
-      )}
+      </div>
     </div>
   );
-
 };
 
 export default MusicPlayer;

@@ -13,305 +13,246 @@ export const AppProvider = ({ children }) => {
     const savedFavorites = localStorage.getItem('favorites');
     return savedFavorites ? JSON.parse(savedFavorites) : [
       {
-        "id": "zND_RkED",
-        "name": "Jo Tum Mere Ho",
+        "id": "Q6l0a09y",
+        "name": "Aaj Ki Raat",
         "type": "",
         "album": {
-            "id": "56692135",
-            "name": "Jo Tum Mere Ho",
-            "url": "https://www.jiosaavn.com/album/jo-tum-mere-ho/KxURLGjeQg4_"
+            "id": "57019500",
+            "name": "Stree 2",
+            "url": "https://www.jiosaavn.com/album/stree-2/VCjKuSJcwxs_"
         },
         "year": "2024",
         "releaseDate": null,
-        "duration": "252",
-        "label": "Universal Music India Pvt. Ltd. (on behalf of Anuv Jain)",
-        "primaryArtists": "Anuv Jain",
-        "primaryArtistsId": "4878402",
+        "duration": "228",
+        "label": "SaReGaMA India Ltd",
+        "primaryArtists": "Amitabh Bhattacharya, Sachin-Jigar, Madhubanti Bagchi, Divya Kumar",
+        "primaryArtistsId": "458681, 461968, 670466, 473376",
         "featuredArtists": "",
         "featuredArtistsId": "",
         "explicitContent": 0,
-        "playCount": "12987841",
+        "playCount": "39602671",
         "language": "hindi",
         "hasLyrics": "true",
-        "url": "https://www.jiosaavn.com/song/jo-tum-mere-ho/CiYvbiZbcnc",
-        "copyright": "℗ 2024 Anuv Jain",
+        "url": "https://www.jiosaavn.com/song/aaj-ki-raat/IV4HARUADko",
+        "copyright": "℗ 2024 Saregama India Ltd",
         "image": [
             {
                 "quality": "50x50",
-                "link": "https://c.saavncdn.com/401/Jo-Tum-Mere-Ho-Hindi-2024-20240731053953-50x50.jpg"
+                "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-50x50.jpg"
             },
             {
                 "quality": "150x150",
-                "link": "https://c.saavncdn.com/401/Jo-Tum-Mere-Ho-Hindi-2024-20240731053953-150x150.jpg"
+                "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-150x150.jpg"
             },
             {
                 "quality": "500x500",
-                "link": "https://c.saavncdn.com/401/Jo-Tum-Mere-Ho-Hindi-2024-20240731053953-500x500.jpg"
+                "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-500x500.jpg"
             }
         ],
         "downloadUrl": [
             {
                 "quality": "12kbps",
-                "link": "https://aac.saavncdn.com/401/1e4444c13f76ac543c19b01d7ea0423a_12.mp4"
+                "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_12.mp4"
             },
             {
                 "quality": "48kbps",
-                "link": "https://aac.saavncdn.com/401/1e4444c13f76ac543c19b01d7ea0423a_48.mp4"
+                "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_48.mp4"
             },
             {
                 "quality": "96kbps",
-                "link": "https://aac.saavncdn.com/401/1e4444c13f76ac543c19b01d7ea0423a_96.mp4"
+                "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_96.mp4"
             },
             {
                 "quality": "160kbps",
-                "link": "https://aac.saavncdn.com/401/1e4444c13f76ac543c19b01d7ea0423a_160.mp4"
+                "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_160.mp4"
             },
             {
                 "quality": "320kbps",
-                "link": "https://aac.saavncdn.com/401/1e4444c13f76ac543c19b01d7ea0423a_320.mp4"
+                "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_320.mp4"
             }
         ]
     },
     {
-      "id": "Q6l0a09y",
-      "name": "Aaj Ki Raat",
-      "type": "",
-      "album": {
-          "id": "57019500",
-          "name": "Stree 2",
-          "url": "https://www.jiosaavn.com/album/stree-2/VCjKuSJcwxs_"
-      },
-      "year": "2024",
-      "releaseDate": null,
-      "duration": "228",
-      "label": "SaReGaMA India Ltd",
-      "primaryArtists": "Amitabh Bhattacharya, Sachin-Jigar, Madhubanti Bagchi, Divya Kumar",
-      "primaryArtistsId": "458681, 461968, 670466, 473376",
-      "featuredArtists": "",
-      "featuredArtistsId": "",
-      "explicitContent": 0,
-      "playCount": "39602671",
-      "language": "hindi",
-      "hasLyrics": "true",
-      "url": "https://www.jiosaavn.com/song/aaj-ki-raat/IV4HARUADko",
-      "copyright": "℗ 2024 Saregama India Ltd",
-      "image": [
-          {
-              "quality": "50x50",
-              "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-50x50.jpg"
-          },
-          {
-              "quality": "150x150",
-              "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-150x150.jpg"
-          },
-          {
-              "quality": "500x500",
-              "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-500x500.jpg"
-          }
-      ],
-      "downloadUrl": [
-          {
-              "quality": "12kbps",
-              "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_12.mp4"
-          },
-          {
-              "quality": "48kbps",
-              "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_48.mp4"
-          },
-          {
-              "quality": "96kbps",
-              "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_96.mp4"
-          },
-          {
-              "quality": "160kbps",
-              "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_160.mp4"
-          },
-          {
-              "quality": "320kbps",
-              "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_320.mp4"
-          }
-      ]
-  },
-  {
-      "id": "S0U546YS",
-      "name": "Millionaire",
-      "type": "",
-      "album": {
-          "id": "57246869",
-          "name": "GLORY",
-          "url": "https://www.jiosaavn.com/album/glory/2dbt04J5vGA_"
-      },
-      "year": "2024",
-      "releaseDate": null,
-      "duration": "199",
-      "label": "T-Series",
-      "primaryArtists": "Yo Yo Honey Singh",
-      "primaryArtistsId": "485956",
-      "featuredArtists": "",
-      "featuredArtistsId": "",
-      "explicitContent": 1,
-      "playCount": "11529513",
-      "language": "hindi",
-      "hasLyrics": "true",
-      "url": "https://www.jiosaavn.com/song/millionaire/I1g,BEAGbmA",
-      "copyright": "℗ 2024 Super Cassettes Industries Private Limited",
-      "image": [
-          {
-              "quality": "50x50",
-              "link": "https://c.saavncdn.com/173/GLORY-Hindi-2024-20240926151002-50x50.jpg"
-          },
-          {
-              "quality": "150x150",
-              "link": "https://c.saavncdn.com/173/GLORY-Hindi-2024-20240926151002-150x150.jpg"
-          },
-          {
-              "quality": "500x500",
-              "link": "https://c.saavncdn.com/173/GLORY-Hindi-2024-20240926151002-500x500.jpg"
-          }
-      ],
-      "downloadUrl": [
-          {
-              "quality": "12kbps",
-              "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_12.mp4"
-          },
-          {
-              "quality": "48kbps",
-              "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_48.mp4"
-          },
-          {
-              "quality": "96kbps",
-              "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_96.mp4"
-          },
-          {
-              "quality": "160kbps",
-              "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_160.mp4"
-          },
-          {
-              "quality": "320kbps",
-              "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_320.mp4"
-          }
-      ]
-  },
-  {
-    "id": "Q6l0a09y",
-    "name": "Aaj Ki Raat",
-    "type": "",
-    "album": {
-        "id": "57019500",
-        "name": "Stree 2",
-        "url": "https://www.jiosaavn.com/album/stree-2/VCjKuSJcwxs_"
+        "id": "S0U546YS",
+        "name": "Millionaire",
+        "type": "",
+        "album": {
+            "id": "57246869",
+            "name": "GLORY",
+            "url": "https://www.jiosaavn.com/album/glory/2dbt04J5vGA_"
+        },
+        "year": "2024",
+        "releaseDate": null,
+        "duration": "199",
+        "label": "T-Series",
+        "primaryArtists": "Yo Yo Honey Singh",
+        "primaryArtistsId": "485956",
+        "featuredArtists": "",
+        "featuredArtistsId": "",
+        "explicitContent": 1,
+        "playCount": "11529513",
+        "language": "hindi",
+        "hasLyrics": "true",
+        "url": "https://www.jiosaavn.com/song/millionaire/I1g,BEAGbmA",
+        "copyright": "℗ 2024 Super Cassettes Industries Private Limited",
+        "image": [
+            {
+                "quality": "50x50",
+                "link": "https://c.saavncdn.com/173/GLORY-Hindi-2024-20240926151002-50x50.jpg"
+            },
+            {
+                "quality": "150x150",
+                "link": "https://c.saavncdn.com/173/GLORY-Hindi-2024-20240926151002-150x150.jpg"
+            },
+            {
+                "quality": "500x500",
+                "link": "https://c.saavncdn.com/173/GLORY-Hindi-2024-20240926151002-500x500.jpg"
+            }
+        ],
+        "downloadUrl": [
+            {
+                "quality": "12kbps",
+                "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_12.mp4"
+            },
+            {
+                "quality": "48kbps",
+                "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_48.mp4"
+            },
+            {
+                "quality": "96kbps",
+                "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_96.mp4"
+            },
+            {
+                "quality": "160kbps",
+                "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_160.mp4"
+            },
+            {
+                "quality": "320kbps",
+                "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_320.mp4"
+            }
+        ]
     },
-    "year": "2024",
-    "releaseDate": null,
-    "duration": "228",
-    "label": "SaReGaMA India Ltd",
-    "primaryArtists": "Amitabh Bhattacharya, Sachin-Jigar, Madhubanti Bagchi, Divya Kumar",
-    "primaryArtistsId": "458681, 461968, 670466, 473376",
-    "featuredArtists": "",
-    "featuredArtistsId": "",
-    "explicitContent": 0,
-    "playCount": "39602671",
-    "language": "hindi",
-    "hasLyrics": "true",
-    "url": "https://www.jiosaavn.com/song/aaj-ki-raat/IV4HARUADko",
-    "copyright": "℗ 2024 Saregama India Ltd",
-    "image": [
-        {
-            "quality": "50x50",
-            "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-50x50.jpg"
+    {
+        "id": "Ap1mYWUe",
+        "name": "Saudebazi (Encore)",
+        "type": "",
+        "album": {
+            "id": "1017711",
+            "name": "Aakrosh",
+            "url": "https://www.jiosaavn.com/album/aakrosh/wtIPeQGgvwI_"
         },
-        {
-            "quality": "150x150",
-            "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-150x150.jpg"
-        },
-        {
-            "quality": "500x500",
-            "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-500x500.jpg"
-        }
-    ],
-    "downloadUrl": [
-        {
-            "quality": "12kbps",
-            "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_12.mp4"
-        },
-        {
-            "quality": "48kbps",
-            "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_48.mp4"
-        },
-        {
-            "quality": "96kbps",
-            "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_96.mp4"
-        },
-        {
-            "quality": "160kbps",
-            "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_160.mp4"
-        },
-        {
-            "quality": "320kbps",
-            "link": "https://aac.saavncdn.com/373/36b1b3637cdeedfaa9a9012453948aa6_320.mp4"
-        }
-    ]
-},
-{
-    "id": "S0U546YS",
-    "name": "Millionaire",
-    "type": "",
-    "album": {
-        "id": "57246869",
-        "name": "GLORY",
-        "url": "https://www.jiosaavn.com/album/glory/2dbt04J5vGA_"
+        "year": "2010",
+        "releaseDate": null,
+        "duration": "354",
+        "label": "T-Series",
+        "primaryArtists": "Javed Ali",
+        "primaryArtistsId": "455926",
+        "featuredArtists": "",
+        "featuredArtistsId": "",
+        "explicitContent": 0,
+        "playCount": "21010817",
+        "language": "hindi",
+        "hasLyrics": "true",
+        "url": "https://www.jiosaavn.com/song/saudebazi-encore/MRhaXC1nYlY",
+        "copyright": "℗ 2010 Super Cassettes Industries Private Limited",
+        "image": [
+            {
+                "quality": "50x50",
+                "link": "https://c.saavncdn.com/427/Aakrosh-Hindi-2010-20221211135423-50x50.jpg"
+            },
+            {
+                "quality": "150x150",
+                "link": "https://c.saavncdn.com/427/Aakrosh-Hindi-2010-20221211135423-150x150.jpg"
+            },
+            {
+                "quality": "500x500",
+                "link": "https://c.saavncdn.com/427/Aakrosh-Hindi-2010-20221211135423-500x500.jpg"
+            }
+        ],
+        "downloadUrl": [
+            {
+                "quality": "12kbps",
+                "link": "https://aac.saavncdn.com/427/6afd29e2afdbf16f6f36bd0b1c2ef3ac_12.mp4"
+            },
+            {
+                "quality": "48kbps",
+                "link": "https://aac.saavncdn.com/427/6afd29e2afdbf16f6f36bd0b1c2ef3ac_48.mp4"
+            },
+            {
+                "quality": "96kbps",
+                "link": "https://aac.saavncdn.com/427/6afd29e2afdbf16f6f36bd0b1c2ef3ac_96.mp4"
+            },
+            {
+                "quality": "160kbps",
+                "link": "https://aac.saavncdn.com/427/6afd29e2afdbf16f6f36bd0b1c2ef3ac_160.mp4"
+            },
+            {
+                "quality": "320kbps",
+                "link": "https://aac.saavncdn.com/427/6afd29e2afdbf16f6f36bd0b1c2ef3ac_320.mp4"
+            }
+        ]
     },
-    "year": "2024",
-    "releaseDate": null,
-    "duration": "199",
-    "label": "T-Series",
-    "primaryArtists": "Yo Yo Honey Singh",
-    "primaryArtistsId": "485956",
-    "featuredArtists": "",
-    "featuredArtistsId": "",
-    "explicitContent": 1,
-    "playCount": "11529513",
-    "language": "hindi",
-    "hasLyrics": "true",
-    "url": "https://www.jiosaavn.com/song/millionaire/I1g,BEAGbmA",
-    "copyright": "℗ 2024 Super Cassettes Industries Private Limited",
-    "image": [
-        {
-            "quality": "50x50",
-            "link": "https://c.saavncdn.com/173/GLORY-Hindi-2024-20240926151002-50x50.jpg"
+    {
+        "id": "ZsGGaRro",
+        "name": "Aayi Nai",
+        "type": "",
+        "album": {
+            "id": "57019500",
+            "name": "Stree 2",
+            "url": "https://www.jiosaavn.com/album/stree-2/VCjKuSJcwxs_"
         },
-        {
-            "quality": "150x150",
-            "link": "https://c.saavncdn.com/173/GLORY-Hindi-2024-20240926151002-150x150.jpg"
-        },
-        {
-            "quality": "500x500",
-            "link": "https://c.saavncdn.com/173/GLORY-Hindi-2024-20240926151002-500x500.jpg"
-        }
-    ],
-    "downloadUrl": [
-        {
-            "quality": "12kbps",
-            "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_12.mp4"
-        },
-        {
-            "quality": "48kbps",
-            "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_48.mp4"
-        },
-        {
-            "quality": "96kbps",
-            "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_96.mp4"
-        },
-        {
-            "quality": "160kbps",
-            "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_160.mp4"
-        },
-        {
-            "quality": "320kbps",
-            "link": "https://aac.saavncdn.com/173/e98d601d7cfc68d0035f4e8a2deae6f9_320.mp4"
-        }
-    ]
-},
+        "year": "2024",
+        "releaseDate": null,
+        "duration": "178",
+        "label": "SaReGaMA India Ltd",
+        "primaryArtists": "Amitabh Bhattacharya, Sachin-Jigar, Pawan Singh, Simran Choudhary, Divya Kumar",
+        "primaryArtistsId": "458681, 461968, 456857, 5836531, 473376",
+        "featuredArtists": "",
+        "featuredArtistsId": "",
+        "explicitContent": 0,
+        "playCount": "21429655",
+        "language": "hindi",
+        "hasLyrics": "true",
+        "url": "https://www.jiosaavn.com/song/aayi-nai/KhssdhViRVw",
+        "copyright": "℗ 2024 Saregama India Ltd",
+        "image": [
+            {
+                "quality": "50x50",
+                "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-50x50.jpg"
+            },
+            {
+                "quality": "150x150",
+                "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-150x150.jpg"
+            },
+            {
+                "quality": "500x500",
+                "link": "https://c.saavncdn.com/373/Stree-2-Hindi-2024-20240828083834-500x500.jpg"
+            }
+        ],
+        "downloadUrl": [
+            {
+                "quality": "12kbps",
+                "link": "https://aac.saavncdn.com/373/9a3ad2173b2e80bc6f9655d1da7c8f27_12.mp4"
+            },
+            {
+                "quality": "48kbps",
+                "link": "https://aac.saavncdn.com/373/9a3ad2173b2e80bc6f9655d1da7c8f27_48.mp4"
+            },
+            {
+                "quality": "96kbps",
+                "link": "https://aac.saavncdn.com/373/9a3ad2173b2e80bc6f9655d1da7c8f27_96.mp4"
+            },
+            {
+                "quality": "160kbps",
+                "link": "https://aac.saavncdn.com/373/9a3ad2173b2e80bc6f9655d1da7c8f27_160.mp4"
+            },
+            {
+                "quality": "320kbps",
+                "link": "https://aac.saavncdn.com/373/9a3ad2173b2e80bc6f9655d1da7c8f27_320.mp4"
+            }
+        ]
+    },
+
     ];
   });
   const audioRef = useRef(null);
