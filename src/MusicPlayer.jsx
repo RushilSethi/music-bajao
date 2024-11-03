@@ -123,8 +123,8 @@ const MusicPlayer = ({ currentIndex = 0, setCurrentIndex, audioRef }) => {
       <button
         title={
           playRandom
-            ? "Currently playing randomly"
-            : "Currently playing in order"
+            ? "Click to switch to play in order"
+            : "Click to switch to play randomly"
         }
         className="btn btn-outline-light mx-2 d-flex align-items-center justify-content-center"
         style={{ width: "100%", fontSize: "1.2em" }}
