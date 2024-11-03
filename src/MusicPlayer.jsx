@@ -128,12 +128,12 @@ const MusicPlayer = ({ currentIndex = 0, setCurrentIndex, audioRef }) => {
       >
         {playRandom ? (
           <>
-            <FaRedo className="me-2" />
+            <FaRandom className="me-2" />
             Playing Songs Randomly
           </>
         ) : (
           <>
-            <FaRandom className="me-2" />
+            <FaRedo className="me-2" />
             Playing Songs in Order
           </>
         )}
