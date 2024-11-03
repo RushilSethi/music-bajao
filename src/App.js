@@ -22,7 +22,10 @@ function App() {
     handleBitrateChange,
     handlePlay,
     audioRef,
+    truncateText
   } = useAppContext();
+
+  const [triggerFetch, setTriggerFetch] = useState(false);
 
   useEffect(() => {
     getTracks();
@@ -34,12 +37,22 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (triggerFetch) {
+      getTracks();
+      setTriggerFetch(false);
+    }
+  }, [triggerFetch]);
+
 
   return (
     <Router>
       <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand" to="/" onClick={function(){
+            setKeyword("");
+            setTriggerFetch(true);
+          }}>
             <img
               src={`${process.env.PUBLIC_URL}/bajao_icon.png`}
               alt="Bajao Icon"
@@ -123,7 +136,7 @@ function App() {
               />
               <div className="player-details">
                 <h5>{nowPlaying.name}</h5>
-                <p>{nowPlaying.primaryArtists}</p>
+                <p>{truncateText(nowPlaying.primaryArtists, 20)}</p>
               </div>
             </>
           ) : (
@@ -151,11 +164,25 @@ function App() {
           </audio>
         </div>
       </div>
+      
 
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/playlist" element={<Playlist />} />
       </Routes>
+
+
+      <footer className="text-center bg-dark text-light py-3">
+        <p style={{ fontSize: "0.9rem", margin: 0 }}>
+          This content is not affiliated with, endorsed, sponsored, or
+          specifically approved by any third-party music provider like Gaana,
+          Saavn, Spotify, and is not responsible for any copyright material.
+          <br />
+          We don't serve any music on our servers.
+          <br />
+          <strong>"Bajao"</strong> by Rushil Sethi
+        </p>
+      </footer>
     </Router>
   );
 }

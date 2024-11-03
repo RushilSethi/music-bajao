@@ -6,10 +6,12 @@ import {
   FaVolumeUp,
   FaStepBackward,
   FaStepForward,
+  FaRandom,
+  FaRedo,
 } from "react-icons/fa";
 
 const MusicPlayer = ({ currentIndex = 0, setCurrentIndex, audioRef }) => {
-  const { favorites, nowPlaying, handlePlay, selectedBitrate } =
+  const { favorites, nowPlaying, handlePlay, selectedBitrate, truncateText } =
     useAppContext();
   const [playRandom, setPlayRandom] = useState(false);
 
@@ -37,7 +39,6 @@ const MusicPlayer = ({ currentIndex = 0, setCurrentIndex, audioRef }) => {
     handlePlay(favorites[newIndex]);
   };
 
-  // automatically play next song based on playRandom Value
   useEffect(() => {
     const audioElement = audioRef.current;
 
@@ -60,65 +61,96 @@ const MusicPlayer = ({ currentIndex = 0, setCurrentIndex, audioRef }) => {
       };
     }
   }, [audioRef, favorites, currentIndex, playRandom]);
+  
 
   return (
     <div
-      className="d-flex flex-column justify-content-center align-items-center bg-dark rounded shadow-lg"
-      style={{ width: "50vw", height: "80vh", margin: "20px auto" }} // Set dimensions
+      className="bg-dark rounded shadow-lg p-4 d-flex flex-column justify-content-center"
+      style={{
+        height: "100%",
+        minHeight: "350px",
+        maxWidth: "600px",
+        margin: "0 auto",
+      }}
     >
-      <div className="text-center mt-4">
-        {nowPlaying ? (
+      <div className="d-flex align-items-center mb-4">
+        <div className="vinyl-container">
+          <img
+            src={
+              nowPlaying
+                ? nowPlaying.image[2].link
+                : `${process.env.PUBLIC_URL}/bajao_icon.png`
+            }
+            alt="cover"
+            className="vinyl-album"
+          />
+        </div>
+        <div className="text-center" style={{ marginLeft: "20px" }}>
+          <h3 className="text-light font-weight-bold mb-1">
+            {nowPlaying ? nowPlaying.name : "Song Name"}
+          </h3>
+          <p className="text-secondary mb-0" style={{ fontSize: "1.2em" }}>
+            {nowPlaying
+              ? truncateText(nowPlaying.primaryArtists, 20)
+              : "Artist Name"}
+          </p>
+        </div>
+      </div>
+
+      <div className="d-flex justify-content-center mb-4">
+        <button
+          className="btn btn-outline-light mx-2 p-3"
+          style={{
+            fontSize: "1.5em",
+            transition: "background-color 0.3s, color 0.3s",
+          }}
+          onClick={handlePrevSong}
+        >
+          <FaStepBackward />
+        </button>
+        <button
+          className="btn btn-outline-light mx-2 p-3"
+          style={{
+            fontSize: "1.5em",
+            transition: "background-color 0.3s, color 0.3s",
+          }}
+          onClick={handleNextSong}
+        >
+          <FaStepForward />
+        </button>
+      </div>
+
+      <button
+        title={
+          playRandom
+            ? "Currently playing randomly"
+            : "Currently playing in order"
+        }
+        className="btn btn-outline-light mx-2 d-flex align-items-center justify-content-center"
+        style={{ width: "100%", fontSize: "1.2em" }}
+        onClick={() => setPlayRandom(!playRandom)}
+      >
+        {playRandom ? (
           <>
-            <img
-              src={nowPlaying.image[2].link}
-              alt="cover"
-              className={`img-fluid mb-3 spin`} // Apply spin class if playing
-              style={{
-                maxHeight: "250px",
-                borderRadius: "50%",
-                width: "250px",
-                height: "250px",
-              }} // Circular image
-            />
-            <h4 className="text-light font-weight-bold mb-1">
-              {nowPlaying.name}
-            </h4>
-            <p className="text-muted mb-4">{nowPlaying.primaryArtists}</p>
+            <FaRedo className="me-2" />
+            Playing Songs Randomly
           </>
         ) : (
           <>
-            <img
-              src="placeholder-image-url.jpg" // Placeholder image URL
-              alt="placeholder cover"
-              className="img-fluid mb-3"
-              style={{
-                maxHeight: "250px",
-                borderRadius: "50%",
-                width: "250px",
-                height: "250px",
-              }} // Circular image
-            />
-            <h4 className="text-light font-weight-bold mb-1">Song Name</h4>
-            <p className="text-muted mb-4">Artist Name</p>
+            <FaRandom className="me-2" />
+            Playing Songs in Order
           </>
         )}
+      </button>
 
-        <div className="d-flex justify-content-center mb-3">
-          <button className="btn btn-secondary mx-2" onClick={handlePrevSong}>
-            <FaStepBackward />
-          </button>
-          <button className="btn btn-secondary mx-2" onClick={handleNextSong}>
-            <FaStepForward />
-          </button>
-          {/* add loop or random toggle button here */}
-          <button
-            className="btn btn-secondary mx-2"
-            onClick={() => setPlayRandom(!playRandom)}
-          >
-            {playRandom ? "Switch to Loop" : "Switch to Random"}
-          </button>
-        </div>
-      </div>
+      <hr
+        className="my-4"
+        style={{ borderColor: "rgba(255, 255, 255, 0.2)" }}
+      />
+      <p className="text-secondary text-center" style={{ fontSize: "0.9em" }}>
+        Note: Autoplay is only supported by songs you have added to your
+        playlist.
+      </p>
     </div>
   );
 };

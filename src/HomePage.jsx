@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Playlist from "./Playlist";
 import { useAppContext } from "./AppContext";
+import { FaHeart } from "react-icons/fa";
 
 function HomePage() {
   //   const [keyword, setKeyword] = useState("");
@@ -191,6 +192,7 @@ function HomePage() {
     handleBitrateChange,
     handlePlay,
     audioRef,
+    addFavorite
   } = useAppContext();
 
   return (
@@ -269,59 +271,58 @@ function HomePage() {
       </div>
 
       <main className="container my-4">
-        {error && (
-          <div className="alert alert-danger text-center my-4" role="alert">
-            {error}
-          </div>
-        )}
+  {error && (
+    <div className="alert alert-danger text-center my-4" role="alert">
+      {error}
+    </div>
+  )}
 
-        {loading ? (
-          <div className="d-flex justify-content-center my-5">
-            <div
-              className="spinner-border"
-              style={{ width: "3rem", height: "3rem" }}
-              role="status"
-            >
-              <span className="visually-hidden">Loading...</span>
+  {loading ? (
+    <div className="d-flex justify-content-center my-5">
+      <div
+        className="spinner-border"
+        style={{ width: "3rem", height: "3rem" }}
+        role="status"
+      >
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  ) : (
+    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      {tracks.map((element, index) => (
+        <div
+          className="col"
+          key={index}
+          style={{ cursor: "pointer" }}
+        >
+          <div className="card h-100 shadow-sm">
+            <img
+              src={element.image[2].link}
+              className="card-img-top"
+              alt="cover"
+              onClick={() => handlePlay(element)}
+            />
+            <div className="card-body">
+              <h5 className="card-title">{element.name}</h5>
+              <div className="card-text">{element.primaryArtists}</div>
+            </div>
+            <div className="card-footer d-flex justify-content-end">
+              <button
+                className="btn btn-outline-primary btn-sm"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevents the card from playing the song
+                  addFavorite(element);
+                }}
+              >
+                <FaHeart className="me-1" /> Add to Favorites
+              </button>
             </div>
           </div>
-        ) : (
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-            {tracks.map((element, index) => (
-              <div
-                className="col"
-                key={index}
-                onClick={() => handlePlay(element)}
-                style={{ cursor: "pointer" }}
-              >
-                <div className="card h-100 shadow-sm">
-                  <img
-                    src={element.image[2].link}
-                    className="card-img-top"
-                    alt="cover"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">{element.name}</h5>
-                    <div className="card-text">{element.primaryArtists}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </main>
-
-      <footer className="text-center bg-dark text-light py-3">
-        <p style={{ fontSize: "0.9rem", margin: 0 }}>
-          This content is not affiliated with, endorsed, sponsored, or
-          specifically approved by any third-party music provider like Gaana,
-          Saavn, Spotify, and is not responsible for any copyright material.
-          <br />
-          We don't serve any music on our servers.
-          <br />
-          <strong>"Bajao"</strong> by Rushil Sethi
-        </p>
-      </footer>
+        </div>
+      ))}
+    </div>
+  )}
+</main>
     </>
   );
 }
