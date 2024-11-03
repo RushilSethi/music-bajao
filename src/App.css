@@ -97,4 +97,29 @@ body {
   font-size: 0.9rem;
 }
 
+.custom-active {
+  color: #ff6b35 !important;
+}
+
+/* playlistPage scroll bar design */
+.track-list {
+  border-radius: 5px; 
+  overflow-y: auto; 
+  overflow-x: hidden; 
+  padding: 10px;
+}
+
+.track-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.track-list::-webkit-scrollbar-thumb {
+  background: #ff6b35;
+  border-radius: 4px;
+}
+
+.track-list::-webkit-scrollbar-track {
+  background: #757575;
+  border-radius: 4px;
+}
 
