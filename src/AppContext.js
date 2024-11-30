@@ -10,6 +10,7 @@ import React, {
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
+  const [playRandom, setPlayRandom] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -165,6 +166,8 @@ export const AppProvider = ({ children }) => {
         setTracks,
         loading,
         setLoading,
+        playRandom,
+        setPlayRandom,
         error,
         setError,
         selectedBitrate,

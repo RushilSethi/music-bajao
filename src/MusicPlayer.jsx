@@ -11,9 +11,8 @@ import {
 } from "react-icons/fa";
 
 const MusicPlayer = ({ currentIndex = 0, setCurrentIndex, audioRef }) => {
-  const { favorites, nowPlaying, handlePlay, selectedBitrate, truncateText } =
+  const { favorites, nowPlaying, handlePlay, selectedBitrate, truncateText, playRandom, setPlayRandom } =
     useAppContext();
-  const [playRandom, setPlayRandom] = useState(false);
 
   const handlePrevSong = () => {
     const newIndex =
