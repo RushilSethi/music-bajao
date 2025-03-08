@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Playlist from "./Playlist";
 import HomePage from "./HomePage";
+import Footer from "./Footer";
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { useAppContext } from './AppContext';
@@ -173,16 +174,19 @@ function App() {
 
 
       <footer className="text-center bg-dark text-light py-3">
-        <p style={{ fontSize: "0.9rem", margin: 0 }}>
+        <p style={{ fontSize: "0.9rem", margin: 0, paddingBottom: "2rem" }}>
           This content is not affiliated with, endorsed, sponsored, or
           specifically approved by any third-party music provider like Gaana,
           Saavn, Spotify, and is not responsible for any copyright material.
           <br />
           We don't serve any music on our servers.
           <br />
-          <strong>"Bajao"</strong> by Rushil Sethi
+          Enjoy the music, hassle-free 🎼
         </p>
       </footer>
+
+      <Footer />
+
     </Router>
   );
 }

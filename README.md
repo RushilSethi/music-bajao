@@ -33,13 +33,23 @@ Please note that this project has not been maintained since its creation in June
 - Bootstrap
 - 3rd party Saavn API 
 
-## Inspiration
+Here's a refined **Purpose & Inspiration** section for your GitHub README that smoothly merges both while also mentioning your next step:  
 
-This project was inspired by a code-along video by Web Dev Simplified on YouTube (https://www.youtube.com/watch?v=QTHRWGn_sJw). I followed the video to learn the basics of creating a music player using HTML, CSS, and JS, and then modified it to use the Saavn API instead of local files. I also added some features such as lyrics display and quality selection. I thank Web Dev Simplified for his awesome tutorial and guidance. I also took inspiration from a few projects I could find online to learn more about the optimal structure for the website.
+---
 
-## Purpose
+### **Purpose & Inspiration**  
+This project originally started as a report for my college subject **Web Development**, where I built a simple music player using **HTML, CSS, and JavaScript**. I took inspiration from a **Traversy Media** tutorial ([video link](https://www.youtube.com/watch?v=QTHRWGn_sJw)) to learn the basics of creating a music player. My goal was to optimize it for **lower-end devices and slow internet connections**, ensuring smooth playback even on **2G and 3G networks**. I tested it on my old iPad Mini 1, and it worked flawlessly. This version, initially called **Music Guru**, later became **Bajao Lite** (accessible at [Bajao Lite](https://bajao-lite.netlify.app)).  
 
-This project initially started of as a report for my college subject Web Development. I learned a lot from this project about web development, music streaming, API integration, and responsive design. I hope you find this project useful and interesting.
+Building on that foundation, I wanted to create a **more polished music player** with a focus on **quality UI/UX** rather than just compatibility with older devices. That's when I developed **Bajao**, using **React, Bootstrap, and the same Saavn API**. While the goal shifted toward enhancing the user experience, I retained the **bitrate selection feature** to ensure smooth streaming on mobile data.  
+
+Later, to maintain consistency, I renamed the **older Saavn music player to Bajao Lite**, aligning it with the main player while keeping it as a lightweight alternative.  
+
+### **What's Next?**  
+The next step for Bajao is to introduce a **recommendation system** that can **autoplay relevant songs** based on user preferences, eliminating the need to manually add them to a playlist. This will further enhance the user experience by providing seamless, intelligent music playback.  
+
+Through this project, I have gained valuable experience in **web development, music streaming, API integration, and responsive design**. I hope you find it useful and interesting!  
+
+---
 
 ## Copyright & Credits
 
