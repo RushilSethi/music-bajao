@@ -1,0 +1,116 @@
+import React, { useEffect } from "react";
+import { useAppContext } from "../context/PlayerContext";
+import {
+  FaStepBackward,
+  FaStepForward,
+  FaRandom,
+  FaRedo,
+} from "react-icons/fa";
+
+const FavoritesMusicPlayer = ({ currentIndex = 0, setCurrentIndex, audioRef }) => {
+  const {
+    favorites,
+    nowPlaying,
+    handlePlay,
+    truncateText,
+    playRandom,
+    setPlayRandom,
+  } = useAppContext();
+
+  const handlePrevSong = () => {
+    const newIndex = currentIndex === 0 ? favorites.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+    if (favorites[newIndex]) {
+      handlePlay(favorites[newIndex]);
+    }
+  };
+
+  const handleNextSong = () => {
+    const newIndex = playRandom
+      ? Math.floor(Math.random() * favorites.length)
+      : (currentIndex + 1) % favorites.length;
+    setCurrentIndex(newIndex);
+    handlePlay(favorites[newIndex]);
+  };
+
+  useEffect(() => {
+    const audioElement = audioRef.current;
+    if (!audioElement) return;
+
+    const handleEnded = () => {
+      if (favorites.length === 0) return;
+      const newIndex = playRandom
+        ? Math.floor(Math.random() * favorites.length)
+        : (currentIndex + 1) % favorites.length;
+      setCurrentIndex(newIndex);
+      handlePlay(favorites[newIndex]);
+    };
+
+    audioElement.addEventListener("ended", handleEnded);
+    return () => {
+      audioElement.removeEventListener("ended", handleEnded);
+    };
+  }, [audioRef, favorites, currentIndex, playRandom]);
+
+  return (
+    <div
+      className="bg-dark rounded shadow-lg p-4 d-flex flex-column justify-content-center"
+      style={{ height: "100%", minHeight: "350px", maxWidth: "600px", margin: "0 auto" }}
+    >
+      <div className="d-flex align-items-center mb-4">
+        <div className="vinyl-container">
+          <img
+            src={
+              nowPlaying
+                ? nowPlaying.image[2].link
+                : `${import.meta.env.BASE_URL}bajao_icon.png`
+            }
+            alt="cover"
+            className="vinyl-album"
+          />
+        </div>
+        <div className="text-center" style={{ marginLeft: "20px" }}>
+          <h3 className="text-light font-weight-bold mb-1">
+            {nowPlaying ? nowPlaying.name : "Song Name"}
+          </h3>
+          <p className="text-secondary mb-0" style={{ fontSize: "1.2em" }}>
+            {nowPlaying ? truncateText(nowPlaying.primaryArtists, 20) : "Artist Name"}
+          </p>
+        </div>
+      </div>
+
+      <div className="d-flex justify-content-center mb-4">
+        <button className="btn btn-outline-light mx-2 p-3" onClick={handlePrevSong}>
+          <FaStepBackward />
+        </button>
+        <button className="btn btn-outline-light mx-2 p-3" onClick={handleNextSong}>
+          <FaStepForward />
+        </button>
+      </div>
+
+      <button
+        title={playRandom ? "Switch to play in order" : "Switch to shuffle play"}
+        className="btn btn-outline-light mx-2 d-flex align-items-center justify-content-center"
+        style={{ width: "100%", fontSize: "1.2em" }}
+        onClick={() => setPlayRandom(!playRandom)}
+      >
+        {playRandom ? (
+          <>
+            <FaRandom className="me-2" /> Playing Songs Randomly
+          </>
+        ) : (
+          <>
+            <FaRedo className="me-2" /> Playing Songs in Order
+          </>
+        )}
+      </button>
+
+      <hr className="my-4" style={{ borderColor: "rgba(255, 255, 255, 0.2)" }} />
+      <p className="text-secondary text-center" style={{ fontSize: "0.9em" }}>
+        Note: Autoplay is only supported by songs you have added to your playlist.
+      </p>
+    </div>
+  );
+};
+
+export default FavoritesMusicPlayer;

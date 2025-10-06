@@ -3,7 +3,6 @@ import Playlist from "./Playlist";
 import HomePage from "./HomePage";
 import Footer from "./Footer";
 import { useState, useEffect, useRef } from "react";
-import "./App.css";
 import { useAppContext } from './AppContext';
 
 
@@ -48,14 +47,14 @@ function App() {
 
   return (
     <Router>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/" onClick={function(){
             setKeyword("");
             setTriggerFetch(true);
           }}>
             <img
-              src={`${process.env.PUBLIC_URL}/bajao_icon.png`}
+              src="/bajao_icon.png"
               alt="Bajao Icon"
               width="40"
               height="40"
@@ -143,7 +142,7 @@ function App() {
           ) : (
             <>
               <img
-                src={`${process.env.PUBLIC_URL}/bajao_icon.png`}
+                src="/bajao_icon.png"
                 alt="cover"
                 className="player-img"
               />
