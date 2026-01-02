@@ -1,3 +1,28 @@
+/* Responsive layout for ExploreDetailsPage heading and search input */
+.explore-details-heading-search {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .explore-details-heading-search {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .explore-details-heading-search h2 {
+    font-size: 1.3rem;
+    text-align: left;
+  }
+  .explore-details-heading-search > div {
+    width: 100%;
+    max-width: none;
+  }
+}
 body {
   background-color: #1a1a1a; 
   color: #f1f1f1; 
@@ -236,12 +261,17 @@ body {
 }
 
 .track-list::-webkit-scrollbar-thumb {
-  background: #ff6b35;
-  border-radius: 4px;
+  background: rgba(255, 71, 87, 0.5);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.02);
+}
+
+.track-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 71, 87, 0.7);
 }
 
 .track-list::-webkit-scrollbar-track {
-  background: #757575;
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 4px;
 }
 
@@ -259,4 +289,3 @@ body {
   color: white;
   border-radius: 0.25rem;
 }
-

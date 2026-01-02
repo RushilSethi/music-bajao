@@ -75,7 +75,7 @@ const MusicSearchPage = ({ onNavigateToDetail = (type, id) => console.log(`Navig
   // Search for albums
   const searchAlbums = async (query) => {
     try {
-      const response = await fetch(`https://saavn.dev/api/search/albums?query=${encodeURIComponent(query)}&page=0&limit=12`);
+      const response = await fetch(`https://saavn.sumit.co/api/search/albums?query=${encodeURIComponent(query)}&page=0&limit=12`);
       const data = await response.json();
       
       if (data.success) {
@@ -91,7 +91,7 @@ const MusicSearchPage = ({ onNavigateToDetail = (type, id) => console.log(`Navig
   // Search for artists
   const searchArtists = async (query) => {
     try {
-      const response = await fetch(`https://saavn.dev/api/search/artists?query=${encodeURIComponent(query)}&page=0&limit=12`);
+      const response = await fetch(`https://saavn.sumit.co/api/search/artists?query=${encodeURIComponent(query)}&page=0&limit=12`);
       const data = await response.json();
       
       if (data.success) {
@@ -771,7 +771,7 @@ const MusicSearchPage = ({ onNavigateToDetail = (type, id) => console.log(`Navig
                 overflowX: 'auto',
                 overflowY: 'hidden',
                 scrollbarWidth: 'thin',
-                scrollbarColor: 'rgba(255, 255, 255, 0.3) transparent',
+                scrollbarColor: 'rgba(255, 71, 87, 0.5) rgba(255, 255, 255, 0.04)',
                 msOverflowStyle: 'auto',
                 WebkitOverflowScrolling: 'touch'
               }}
@@ -780,18 +780,19 @@ const MusicSearchPage = ({ onNavigateToDetail = (type, id) => console.log(`Navig
               <style>
                 {`
                   .pinned-scroll::-webkit-scrollbar {
-                    height: 6px;
+                    height: 8px;
                   }
                   .pinned-scroll::-webkit-scrollbar-track {
-                    background: rgba(255, 255, 255, 0.1);
-                    border-radius: 3px;
+                    background: rgba(255, 255, 255, 0.04);
+                    border-radius: 10px;
                   }
                   .pinned-scroll::-webkit-scrollbar-thumb {
-                    background: rgba(220, 53, 69, 0.5);
-                    border-radius: 3px;
+                    background: rgba(255, 71, 87, 0.5);
+                    border-radius: 10px;
+                    border: 2px solid rgba(255, 255, 255, 0.02);
                   }
                   .pinned-scroll::-webkit-scrollbar-thumb:hover {
-                    background: rgba(220, 53, 69, 0.7);
+                    background: rgba(255, 71, 87, 0.7);
                   }
                 `}
               </style>
@@ -1025,6 +1026,7 @@ const MusicSearchPage = ({ onNavigateToDetail = (type, id) => console.log(`Navig
                       <div className="flex-grow-1 min-w-0">
                         <div className="d-flex align-items-center mb-1">
                           <div
+                            className="me-2"
                             style={{
                               background: 'linear-gradient(135deg, #28a745, #20c997)',
                               borderRadius: '4px',

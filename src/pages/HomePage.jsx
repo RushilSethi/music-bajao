@@ -241,114 +241,244 @@ function HomePage() {
           <div className="row g-2 mb-3">
             {categoryCards.map((category) => (
               <div key={category.id} className="col-6 col-md-3">
-                <div
-                  className="position-relative overflow-hidden"
-                  style={{
-                    background: category.gradient,
-                    borderRadius: "16px",
-                    cursor: "pointer",
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    height: window.innerWidth < 768 ? "80px" : "120px",
-                    boxShadow: category.special
-                      ? "0 6px 25px rgba(255, 50, 50, 0.6)" // stronger glow
-                      : "0 4px 15px rgba(0, 0, 0, 0.3)",
-                    border: category.special
-                      ? "2px solid rgba(255,255,255,0.6)"
-                      : "none", // 🔥 border for Trending
-                  }}
-                  onClick={() => handleCategoryClick(category.id)}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform =
-                      "translateY(-3px) scale(1.02)";
-                    e.currentTarget.style.boxShadow =
-                      "0 8px 25px rgba(0, 0, 0, 0.4)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0) scale(1)";
-                    e.currentTarget.style.boxShadow =
-                      "0 4px 15px rgba(0, 0, 0, 0.3)";
-                  }}
-                >
-                  {/* Background Pattern */}
+                {category.id === "Trending" ? (
                   <div
-                    className="position-absolute"
+                    className="position-relative overflow-hidden"
                     style={{
-                      top: "-10px",
-                      right: "-10px",
-                      width: "60px",
-                      height: "60px",
-                      borderRadius: "50%",
-                      background: "rgba(255, 255, 255, 0.15)",
+                      background: `linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #383838 100%)`,
+                      borderRadius: "16px",
+                      cursor: "pointer",
+                      transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                      height: window.innerWidth < 768 ? "80px" : "120px",
+                      boxShadow: "0 8px 30px rgba(255, 140, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                      border: "2px solid rgba(255, 140, 0, 0.3)",
                     }}
-                  />
-                  <div
-                    className="position-absolute"
-                    style={{
-                      bottom: "-15px",
-                      left: "-15px",
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      background: "rgba(255, 255, 255, 0.1)",
+                    onClick={() => handleCategoryClick(category.id)}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-5px) scale(1.03)";
+                      e.currentTarget.style.boxShadow = "0 15px 45px rgba(255, 140, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2)";
+                      e.currentTarget.style.border = "2px solid rgba(255, 140, 0, 0.6)";
                     }}
-                  />
-
-                  <div className="p-2 h-100 d-flex flex-column justify-content-between position-relative">
-                    <div className="d-flex align-items-center justify-content-between">
-                      <span
-                        style={{
-                          fontSize:
-                            window.innerWidth < 768 ? "1.2rem" : "1.5rem",
-                        }}
-                      >
-                        {category.icon}
-                      </span>
-                      <div
-                        className="rounded-circle d-flex align-items-center justify-content-center"
-                        style={{
-                          width: "8px",
-                          height: "8px",
-                          background: "rgba(255, 255, 255, 0.4)",
-                        }}
-                      />
-                    </div>
-
-                    <div>
-                      <h3
-                        className="text-white fw-bold mb-0"
-                        style={{
-                          fontSize:
-                            window.innerWidth < 768 ? "0.85rem" : "1rem",
-                          lineHeight: "1.2",
-                        }}
-                      >
-                        {category.title}
-                      </h3>
-                      <p
-                        className="text-white-75 mb-0"
-                        style={{
-                          fontSize:
-                            window.innerWidth < 768 ? "0.7rem" : "0.75rem",
-                          opacity: "0.9",
-                        }}
-                      >
-                        {category.subtitle}
-                      </p>
-                      <p
-                        className="text-white-50 mb-0"
-                        style={{
-                          fontSize:
-                            window.innerWidth < 768 ? "0.65rem" : "0.7rem",
-                          opacity: "0.7",
-                        }}
-                      >
-                        {typeof category.count === "number"
-                          ? `${category.count} options`
-                          : category.count}
-                      </p>
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0) scale(1)";
+                      e.currentTarget.style.boxShadow = "0 8px 30px rgba(255, 140, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)";
+                      e.currentTarget.style.border = "2px solid rgba(255, 140, 0, 0.3)";
+                    }}
+                  >
+                    {/* Animated gradient overlay */}
+                    <div
+                      className="position-absolute w-100 h-100"
+                      style={{
+                        background: `linear-gradient(45deg, 
+                          transparent 0%, 
+                          rgba(255, 140, 0, 0.08) 25%, 
+                          rgba(255, 165, 0, 0.12) 50%, 
+                          rgba(255, 140, 0, 0.08) 75%, 
+                          transparent 100%)`,
+                        animation: "shimmer 3s ease-in-out infinite",
+                        backgroundSize: "200% 200%",
+                      }}
+                    />
+                    
+                    {/* Pulsing circles */}
+                    <div
+                      className="position-absolute"
+                      style={{
+                        top: "10px",
+                        right: "10px",
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "50%",
+                        background: "rgba(255, 140, 0, 0.25)",
+                        animation: "pulse 2s ease-in-out infinite",
+                      }}
+                    />
+                    <div
+                      className="position-absolute"
+                      style={{
+                        bottom: "15px",
+                        left: "15px",
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "50%",
+                        background: "rgba(255, 165, 0, 0.3)",
+                        animation: "pulse 2s ease-in-out infinite 0.5s",
+                      }}
+                    />
+                    
+                    {/* Diagonal stripes pattern */}
+                    <div
+                      className="position-absolute w-100 h-100"
+                      style={{
+                        backgroundImage: `repeating-linear-gradient(
+                          45deg,
+                          transparent,
+                          transparent 10px,
+                          rgba(255, 140, 0, 0.04) 10px,
+                          rgba(255, 140, 0, 0.04) 20px
+                        )`,
+                        opacity: 0.6,
+                      }}
+                    />
+                    
+                    <div className="p-2 h-100 d-flex flex-column justify-content-between position-relative" style={{ zIndex: 1 }}>
+                      <div className="d-flex align-items-center justify-content-between">
+                        <div 
+                          className="d-flex align-items-center justify-content-center"
+                          style={{
+                            width: window.innerWidth < 768 ? "32px" : "40px",
+                            height: window.innerWidth < 768 ? "32px" : "40px",
+                            background: "linear-gradient(135deg, #ff8c00, #ffa500)",
+                            borderRadius: "12px",
+                            boxShadow: "0 4px 15px rgba(255, 140, 0, 0.5)",
+                            animation: "float 3s ease-in-out infinite",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: window.innerWidth < 768 ? "1.1rem" : "1.3rem",
+                              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))",
+                            }}
+                          >
+                            {category.icon}
+                          </span>
+                        </div>
+                        <div
+                          className="rounded-pill px-2 py-1"
+                          style={{
+                            background: "rgba(255, 140, 0, 0.25)",
+                            border: "1px solid rgba(255, 140, 0, 0.5)",
+                            fontSize: "0.65rem",
+                            color: "#fff",
+                            fontWeight: "600",
+                            backdropFilter: "blur(10px)",
+                          }}
+                        >
+                          NEW
+                        </div>
+                      </div>
+                      <div>
+                        <h3
+                          className="text-white fw-bold mb-1"
+                          style={{
+                            fontSize: window.innerWidth < 768 ? "0.9rem" : "1.1rem",
+                            lineHeight: "1.2",
+                            textShadow: "0 2px 8px rgba(255, 140, 0, 0.4), 0 0 20px rgba(255, 140, 0, 0.2)",
+                            letterSpacing: "0.3px",
+                          }}
+                        >
+                          Explore Your Favorite Playlists
+                        </h3>
+                        <p
+                          className="mb-0"
+                          style={{
+                            fontSize: window.innerWidth < 768 ? "0.7rem" : "0.75rem",
+                            color: "rgba(255, 255, 255, 0.85)",
+                            textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                          }}
+                        >
+                          Curated for you • {category.count}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div
+                    className="position-relative overflow-hidden"
+                    style={{
+                      background: category.gradient,
+                      borderRadius: "16px",
+                      cursor: "pointer",
+                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      height: window.innerWidth < 768 ? "80px" : "120px",
+                      boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",
+                      border: "none",
+                    }}
+                    onClick={() => handleCategoryClick(category.id)}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-3px) scale(1.02)";
+                      e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.4)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0) scale(1)";
+                      e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.3)";
+                    }}
+                  >
+                    {/* Background Pattern */}
+                    <div
+                      className="position-absolute"
+                      style={{
+                        top: "-10px",
+                        right: "-10px",
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "50%",
+                        background: "rgba(255, 255, 255, 0.15)",
+                      }}
+                    />
+                    <div
+                      className="position-absolute"
+                      style={{
+                        bottom: "-15px",
+                        left: "-15px",
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        background: "rgba(255, 255, 255, 0.1)",
+                      }}
+                    />
+                    <div className="p-2 h-100 d-flex flex-column justify-content-between position-relative">
+                      <div className="d-flex align-items-center justify-content-between">
+                        <span
+                          style={{
+                            fontSize: window.innerWidth < 768 ? "1.2rem" : "1.5rem",
+                          }}
+                        >
+                          {category.icon}
+                        </span>
+                        <div
+                          className="rounded-circle d-flex align-items-center justify-content-center"
+                          style={{
+                            width: "8px",
+                            height: "8px",
+                            background: "rgba(255, 255, 255, 0.4)",
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <h3
+                          className="text-white fw-bold mb-0"
+                          style={{
+                            fontSize: window.innerWidth < 768 ? "0.85rem" : "1rem",
+                            lineHeight: "1.2",
+                          }}
+                        >
+                          {category.title}
+                        </h3>
+                        <p
+                          className="text-white-75 mb-0"
+                          style={{
+                            fontSize: window.innerWidth < 768 ? "0.7rem" : "0.75rem",
+                            opacity: "0.9",
+                          }}
+                        >
+                          {category.subtitle}
+                        </p>
+                        <p
+                          className="text-white-50 mb-0"
+                          style={{
+                            fontSize: window.innerWidth < 768 ? "0.65rem" : "0.7rem",
+                            opacity: "0.7",
+                          }}
+                        >
+                          {typeof category.count === "number"
+                            ? `${category.count} options`
+                            : category.count}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>

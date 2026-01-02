@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/PlayerContext";
 import { FaPlay, FaHeart, FaSearch, FaClock, FaMusic, FaRegHeart, FaSpinner, FaUser, FaCompactDisc } from "react-icons/fa";
 const ExploreDetailsPage = () => {
   const params = useParams();
-  const { id } = params;
-  
-  const pathname = window.location.pathname;
-  const type = pathname.includes('/album/') ? 'album' : pathname.includes('/artist/') ? 'artist' : null;
+  const navigate = useNavigate();
+  const { type, id } = params;
   
   const {
     handlePlay,
@@ -15,6 +13,7 @@ const ExploreDetailsPage = () => {
     addFavorite,
     removeFavorite,
     truncateText,
+    decodeHtmlEntities
   } = useAppContext();
   const [data, setData] = useState(null);
   const [tracks, setTracks] = useState([]);
@@ -34,9 +33,15 @@ const ExploreDetailsPage = () => {
         return;
       }
       
+      if (!['album', 'artist'].includes(type)) {
+        setError('Invalid type parameter.');
+        setLoading(false);
+        return;
+      }
+      
       try {
         if (type === "album") {
-          const response = await fetch(`https://saavn.dev/api/albums?id=${id}`);
+          const response = await fetch(`https://saavn.sumit.co/api/albums?id=${id}`);
           if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           
           const result = await response.json();
@@ -83,8 +88,8 @@ const ExploreDetailsPage = () => {
           
         } else if (type === "artist") {
           const [songsResponse, artistResponse] = await Promise.all([
-            fetch(`https://saavn.dev/api/artists/${id}/songs?page=0&sortBy=popularity&sortOrder=desc`),
-            fetch(`https://saavn.dev/api/artists/${id}?page=0&songCount=10&albumCount=10&sortBy=popularity&sortOrder=desc`)
+            fetch(`https://saavn.sumit.co/api/artists/${id}/songs?page=0&sortBy=popularity&sortOrder=desc`),
+            fetch(`https://saavn.sumit.co/api/artists/${id}?page=0&songCount=10&albumCount=10&sortBy=popularity&sortOrder=desc`)
           ]);
           
           if (!songsResponse.ok || !artistResponse.ok) {
@@ -192,7 +197,7 @@ const ExploreDetailsPage = () => {
           e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)';
           e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.15)';
         }}
-        onClick={() => handlePlay(track, type === 'album' ? 'album' : 'artist')}
+        onClick={() => handlePlay(track, 'playlist', { id: data?.id || id, name: data?.name, tracks })}
       >
         {/* Reflective gradient overlay */}
         <div
@@ -288,7 +293,7 @@ const ExploreDetailsPage = () => {
                           transparent 100%
                         )
                       `;
-                    } catch (error) {
+                    } catch {
                       // Fallback for CORS issues
                       reflection.style.background = `
                         linear-gradient(135deg, 
@@ -351,7 +356,7 @@ const ExploreDetailsPage = () => {
                   marginBottom: '8px',
                 }}
               >
-                {track.name}
+                {decodeHtmlEntities(track.name)}
               </h5>
               <p
                 className="card-text"
@@ -541,7 +546,7 @@ const ExploreDetailsPage = () => {
                   <div key={album.id} className="col-6 col-md-4 col-lg-2">
                     <div
                       style={{ cursor: 'pointer', transition: 'transform 0.3s ease' }}
-                      onClick={() => window.location.href = `/album/${album.id}`}
+                      onClick={() => navigate(`/explore/artist/${id}/album/${album.id}`)}
                       onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-8px)'}
                       onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                     >
@@ -580,14 +585,24 @@ const ExploreDetailsPage = () => {
         )}
         <div className="row mb-4">
           <div className="col-12">
-            <div className="d-flex justify-content-between align-items-center mb-3">
+            <div
+              className="explore-details-heading-search mb-3"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '1.5rem',
+                flexWrap: 'wrap',
+              }}
+            >
               <h2 style={{ color: '#fff', fontSize: '1.8rem', fontWeight: '700', marginBottom: '0' }}>
                 Popular Songs
               </h2>
-              <div className="col-12 col-md-6 col-lg-4">
+              <div style={{ width: '100%', maxWidth: '400px' }}>
                 <div className="position-relative">
-                  <FaSearch className="position-absolute top-50 translate-middle-y ms-3" 
-                    style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '1rem', zIndex: 2 }} 
+                  <FaSearch className="position-absolute top-50 translate-middle-y ms-3"
+                    style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '1rem', zIndex: 2 }}
                   />
                   <input
                     type="text"

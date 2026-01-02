@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useAppContext } from "../../context/PlayerContext";
 import {
   FaChevronUp,
@@ -12,6 +13,8 @@ import {
 // import "./MusicPlayer.css";
 
 const MusicPlayer = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  
   const {
     nowPlaying,
     audioRef,
@@ -35,15 +38,27 @@ const MusicPlayer = () => {
 
   const favIndex = favorites.findIndex((track) => track.id === nowPlaying?.id);
 
-  // ▶️ Prev / Next for favorites only
+  const handleOpenTrackModal = () => {
+    if (nowPlaying?.id) {
+      setSearchParams({ modaltrackid: nowPlaying.id });
+    }
+  };
+
+  // ▶️ Prev / Next for favorites and playlist
   // 🔙 Prev Song
   const handlePrevSong = () => {
-    if (!nowPlaying) return;
+    if (!nowPlaying || playSource === "radio") return;
 
-    if (playSource === "favorites") {
-      if (favorites.length === 0) return;
-      const newIndex = favIndex === 0 ? favorites.length - 1 : favIndex - 1;
-      handlePlay(favorites[newIndex], "favorites");
+    if (playSource === "favorites" || playSource === "playlist") {
+      const list = playSource === "favorites" ? favorites : queue;
+      if (list.length === 0) return;
+      console.log("list console log");
+      console.log(list);
+      const currentIndex = list.findIndex((track) => track.id === nowPlaying.id);
+      if (currentIndex === -1) return;
+      const newIndex = currentIndex === 0 ? list.length - 1 : currentIndex - 1;
+      handlePlay(list[newIndex], playSource);
+      return;
     }
 
     if (playSource === "home") {
@@ -56,14 +71,18 @@ const MusicPlayer = () => {
 
   // ⏭️ Next Song
   const handleNextSong = () => {
-    if (!nowPlaying) return;
+    if (!nowPlaying || playSource === "radio") return;
 
-    if (playSource === "favorites") {
-      if (favorites.length === 0) return;
+    if (playSource === "favorites" || playSource === "playlist") {
+      const list = playSource === "favorites" ? favorites : queue;
+      if (list.length === 0) return;
+      const currentIndex = list.findIndex((track) => track.id === nowPlaying.id);
+      if (currentIndex === -1) return;
       const newIndex = playRandom
-        ? Math.floor(Math.random() * favorites.length)
-        : (favIndex + 1) % favorites.length;
-      handlePlay(favorites[newIndex], "favorites");
+        ? Math.floor(Math.random() * list.length)
+        : (currentIndex + 1) % list.length;
+      handlePlay(list[newIndex], playSource);
+      return;
     }
 
     if (playSource === "home") {
@@ -179,7 +198,7 @@ const MusicPlayer = () => {
       {expanded && (
         <div className="player-expanded mt-2">
           <div className="d-flex align-items-center mb-2">
-            <div className="vinyl-container">
+            <div className="vinyl-container" onClick={handleOpenTrackModal} style={{ cursor: 'pointer' }}>
               <img
                 src={
                   nowPlaying
@@ -188,10 +207,18 @@ const MusicPlayer = () => {
                 }
                 alt="cover"
                 className="vinyl-album"
+                title="Click to view track details"
               />
             </div>
             <div className="text-center" style={{ marginLeft: "20px" }}>
-              <h3 className="text-light font-weight-bold mb-1">
+              <h3 
+                className="text-light font-weight-bold mb-1"
+                onClick={handleOpenTrackModal}
+                style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ff4757'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
+                title="Click to view track details"
+              >
                 {nowPlaying ? decodeHtmlEntities(nowPlaying.name) : "Song Name"}
               </h3>
               <p className="text-secondary mb-0" style={{ fontSize: "1.2em" }}>
@@ -209,76 +236,90 @@ const MusicPlayer = () => {
            mb-3"
           >
             <div className="">
-              <button
-                className={`btn btn-outline-light mx-2 p-2 ${
-                  playSource === "home" &&
+            <button
+              className={`btn btn-outline-light mx-2 p-2 ${
+                (playSource === "radio") || (playSource === "home" &&
+                (!nowPlaying ||
+                  queue.findIndex((t) => t.id === nowPlaying.id) <= 0))
+                  ? "disabled opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              onClick={() => {
+                if (
+                  (playSource === "radio") || (playSource === "home" &&
                   (!nowPlaying ||
-                    queue.findIndex((t) => t.id === nowPlaying.id) <= 0)
-                    ? "disabled opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-                onClick={() => {
-                  if (
-                    playSource === "home" &&
-                    (!nowPlaying ||
-                      queue.findIndex((t) => t.id === nowPlaying.id) <= 0)
-                  ) {
-                    return; // Prevent clicking when disabled
-                  }
-                  handlePrevSong();
-                }}
-              >
-                <FaStepBackward />
-              </button>
+                    queue.findIndex((t) => t.id === nowPlaying.id) <= 0))
+                ) {
+                  return; // Prevent clicking when disabled
+                }
+                handlePrevSong();
+              }}
+              disabled={playSource === "radio"}
+              title={playSource === "radio" ? "Navigation disabled for radio" : "Previous song"}
+            >
+              <FaStepBackward />
+            </button>
 
-              <button
-                className={`btn mx-2 p-2 ${
-                  isFetchingRecs ? "btn-secondary" : "btn-outline-light"
-                }`}
-                onClick={handleNextSong}
-                disabled={isFetchingRecs}
-              >
-                <FaStepForward />
-              </button>
+            <button
+              className={`btn mx-2 p-2 ${
+                playSource === "radio" || isFetchingRecs ? "btn-secondary" : "btn-outline-light"
+              }`}
+              onClick={handleNextSong}
+              disabled={isFetchingRecs || playSource === "radio"}
+              title={playSource === "radio" ? "Navigation disabled for radio" : "Next song"}
+            >
+              <FaStepForward />
+            </button>
             </div>
             <button
-              className="btn btn-outline-danger mx-2 p-2"
+              className={`btn btn-outline-danger mx-2 p-2 ${
+                playSource === "radio" ? "disabled opacity-50" : ""
+              }`}
               onClick={() => {
-                if (nowPlaying) {
+                if (nowPlaying && playSource !== "radio") {
                   addFavorite(nowPlaying);
+                } else if (playSource === "radio") {
+                  showToast("Cannot add radio stations to favorites");
                 }
               }}
+              disabled={playSource === "radio"}
+              title={playSource === "radio" ? "Favorites unavailable for radio" : "Add to favorites"}
             >
               <FaHeart />
             </button>
           </div>
           <button
             title={
-              playSource === "favorites"
+              playSource === "radio"
+                ? "Shuffle unavailable for radio"
+                : ["favorites", "playlist"].includes(playSource)
                 ? playRandom
                   ? "Switch to order play"
                   : "Switch to random play"
                 : "Disabled in Home mode"
             }
             className={`btn d-flex align-items-center justify-content-center w-100 ${
-              playSource === "favorites" ? "btn-outline-light" : "btn-secondary"
+              ["favorites", "playlist"].includes(playSource) && playSource !== "radio" ? "btn-outline-light" : "btn-secondary"
             }`}
             style={{
               fontSize: "1em",
-              cursor: playSource === "favorites" ? "pointer" : "not-allowed",
-              opacity: playSource === "favorites" ? 1 : 0.6,
+              cursor: ["favorites", "playlist"].includes(playSource) && playSource !== "radio" ? "pointer" : "not-allowed",
+              opacity: ["favorites", "playlist"].includes(playSource) && playSource !== "radio" ? 1 : 0.6,
             }}
             onClick={() => {
-              if (playSource === "favorites") {
+              if (playSource === "radio") {
+                showToast("Shuffle is not available for radio streams");
+              } else if (["favorites", "playlist"].includes(playSource)) {
                 setPlayRandom(!playRandom);
               } else {
                 showToast(
-                  "This option works only when playing from Favorites."
+                  "This option works only when playing from Favorites or Playlists."
                 );
               }
             }}
+            disabled={playSource === "radio"}
           >
-            {playRandom && playSource === "favorites" ? (
+            {playRandom && ["favorites", "playlist"].includes(playSource) && playSource !== "radio" ? (
               <>
                 <FaRandom className="me-2" /> Playing Songs Randomly
               </>

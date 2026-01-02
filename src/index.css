@@ -11,3 +11,40 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ===== Modern Scrollbar Styling for Entire App ===== */
+
+/* WebKit browsers (Chrome, Edge, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 71, 87, 0.5);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 71, 87, 0.7);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(255, 71, 87, 0.9);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 71, 87, 0.5) rgba(255, 255, 255, 0.04);
+}
+
+*:hover {
+  scrollbar-color: rgba(255, 71, 87, 0.7) rgba(255, 255, 255, 0.04);
+}
+

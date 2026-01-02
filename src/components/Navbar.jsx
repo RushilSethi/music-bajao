@@ -173,6 +173,31 @@ const Navbar = ({ setTriggerFetch }) => {
                 Your Playlist
               </Link>
             </li>
+            {/* <li className="nav-item">
+              <Link 
+                className="nav-link"
+                to="/radio"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  transition: 'all 0.3s ease',
+                  fontWeight: '500'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = '#ff4757';
+                  e.target.style.background = 'rgba(255, 71, 87, 0.1)';
+                  e.target.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = 'rgba(255, 255, 255, 0.8)';
+                  e.target.style.background = 'transparent';
+                  e.target.style.transform = 'translateY(0)';
+                }}
+              >
+                🎙️ Radio
+              </Link>
+            </li> */}
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -338,21 +363,22 @@ const Navbar = ({ setTriggerFetch }) => {
         
         /* Custom scrollbar for dropdown if needed */
         .dropdown-menu::-webkit-scrollbar {
-          width: 4px;
+          width: 8px;
         }
         
         .dropdown-menu::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 2px;
+          background: rgba(255, 255, 255, 0.04);
+          border-radius: 10px;
         }
         
         .dropdown-menu::-webkit-scrollbar-thumb {
-          background: rgba(255, 133, 27, 0.5);
-          border-radius: 2px;
+          background: rgba(255, 71, 87, 0.5);
+          border-radius: 10px;
+          border: 2px solid rgba(255, 255, 255, 0.02);
         }
         
         .dropdown-menu::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 133, 27, 0.7);
+          background: rgba(255, 71, 87, 0.7);
         }
       `}</style>
     </nav>

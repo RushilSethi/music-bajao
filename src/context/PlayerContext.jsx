@@ -23,6 +23,7 @@ export const AppProvider = ({ children }) => {
   const [playSource, setPlaySource] = useState(null);
   const [queue, setQueue] = useState([]);
   const audioRef = useRef(null);
+  const [currentPlaylist, setCurrentPlaylist] = useState(null);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -183,75 +184,96 @@ export const AppProvider = ({ children }) => {
     });
   };
 
-  const handlePlay = (track, source) => {
-    console.log("source set to :" + source);
-    setNowPlaying(track);
-
-    // Check if we're switching to a different source
-    const isSourceSwitch = playSource !== null && playSource !== source;
-    setPlaySource(source);
-
-    setQueue((prevQueue) => {
-      // If switching sources, we need to handle the queue differently
-      if (isSourceSwitch) {
-        console.log(`Switching from ${playSource} to ${source}`);
-
-        // Clear queue and start fresh with new source context
-        const trackWithFlags = {
-          ...track,
-          listenedTo: false,
-          isCurrentlyPlaying: true,
-          source: source,
-        };
-
-        // For favorites, we might want to add all favorites to queue
-        if (source === "favorites") {
-          const favoritesQueue = favorites.map((fav) => ({
-            ...fav,
-            listenedTo: false,
-            isCurrentlyPlaying: fav.id === track.id,
-            source: "favorites",
-          }));
-          return favoritesQueue;
-        }
-
-        // For other sources, start with just the current track
-        return [trackWithFlags];
+  const handlePlay = (track, source, playlistContext = null) => {
+    // Handle radio source separately - don't create queue like other sources
+    if (source === 'radio') {
+      setPlaySource('radio');
+      setNowPlaying(track);
+      setQueue([{ ...track, isCurrentlyPlaying: true, source: 'radio' }]);
+      if (audioRef.current) {
+        // For radio, use the stream URL directly
+        const streamUrl = track.downloadUrl?.[0]?.link || track.url_resolved;
+        audioRef.current.src = streamUrl;
+        audioRef.current.play().catch((error) => {
+          console.error("Error playing radio stream:", error);
+          showToast("Error streaming this station. Please try another.");
+        });
       }
+      return;
+    }
 
-      // Same source - normal queue management
-      const exists = prevQueue.some((item) => item.id === track.id);
-
-      if (exists) {
-        // Update existing track to be currently playing
-        return prevQueue.map((item) => ({
-          ...item,
-          isCurrentlyPlaying: item.id === track.id,
-          listenedTo: item.id === track.id ? false : item.listenedTo, // Reset listened status for replay
+    // Unify 'album' and 'artist' as 'playlist' for playback logic
+    let unifiedSource = source;
+    if (source === 'album' || source === 'artist') {
+      unifiedSource = 'playlist';
+    }
+    setPlaySource(unifiedSource);
+    // If playlist context is provided, update it
+    if (unifiedSource === 'playlist' && playlistContext) {
+      setCurrentPlaylist(playlistContext);
+    }
+    // Always set the full playlist as the queue for playlist source
+    if (unifiedSource === 'playlist' && (currentPlaylist?.tracks?.length || playlistContext?.tracks?.length)) {
+      const playlistTracks = (playlistContext?.tracks || currentPlaylist.tracks).map((plTrack) => ({
+        ...plTrack,
+        listenedTo: false,
+        isCurrentlyPlaying: plTrack.id === track.id,
+        source: 'playlist',
+      }));
+      let finalQueue = playlistTracks;
+      if (playRandom) {
+        // Shuffle the playlist
+        for (let i = finalQueue.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [finalQueue[i], finalQueue[j]] = [finalQueue[j], finalQueue[i]];
+        }
+        // Ensure the selected track is first and marked as currently playing
+        const selectedIdx = finalQueue.findIndex(t => t.id === track.id);
+        if (selectedIdx > 0) {
+          [finalQueue[0], finalQueue[selectedIdx]] = [finalQueue[selectedIdx], finalQueue[0]];
+        }
+        finalQueue = finalQueue.map((t, idx) => ({
+          ...t,
+          isCurrentlyPlaying: idx === 0
         }));
       }
-
-      // Add new track to queue
-      const trackWithFlags = {
-        ...track,
+      setQueue(finalQueue);
+      setNowPlaying(finalQueue.find(t => t.isCurrentlyPlaying) || finalQueue[0]);
+      // Handle audio playback
+      if (audioRef.current) {
+        const np = finalQueue.find(t => t.isCurrentlyPlaying) || finalQueue[0];
+        audioRef.current.src = np.downloadUrl[selectedBitrate].link;
+        audioRef.current.play().catch((error) => {
+          console.error("Error playing audio:", error);
+          showToast("Error playing this track. Please try another.");
+        });
+      }
+      return;
+    }
+    // For favorites, set all favorites as queue
+    if (unifiedSource === 'favorites') {
+      const favoritesQueue = favorites.map((fav) => ({
+        ...fav,
         listenedTo: false,
-        isCurrentlyPlaying: true,
-        source: source,
-      };
-
-      // Clear previous "currently playing" flags
-      const updatedQueue = prevQueue.map((t) => ({
-        ...t,
-        isCurrentlyPlaying: false,
+        isCurrentlyPlaying: fav.id === track.id,
+        source: 'favorites',
       }));
-
-      return [...updatedQueue, trackWithFlags];
-    });
-
-    // Handle audio playback
+      setQueue(favoritesQueue);
+      setNowPlaying(favoritesQueue.find(t => t.isCurrentlyPlaying) || favoritesQueue[0]);
+      if (audioRef.current) {
+        const np = favoritesQueue.find(t => t.isCurrentlyPlaying) || favoritesQueue[0];
+        audioRef.current.src = np.downloadUrl[selectedBitrate].link;
+        audioRef.current.play().catch((error) => {
+          console.error("Error playing audio:", error);
+          showToast("Error playing this track. Please try another.");
+        });
+      }
+      return;
+    }
+    // For home or other sources, just play the single track
+    setQueue([{ ...track, listenedTo: false, isCurrentlyPlaying: true, source: unifiedSource }]);
+    setNowPlaying(track);
     if (audioRef.current) {
-      console.log("track:");
-      console.log(track);
       audioRef.current.src = track.downloadUrl[selectedBitrate].link;
       audioRef.current.play().catch((error) => {
         console.error("Error playing audio:", error);
@@ -467,9 +489,9 @@ export const AppProvider = ({ children }) => {
         );
 
         addToQueue(finalRecommendations, "home");
-        showToast(
-          `Added ${finalRecommendations.length} songs from similar artists`
-        );
+        // showToast(
+        //   `Added ${finalRecommendations.length} songs from similar artists`
+        // );
 
         return;
       }
@@ -482,9 +504,9 @@ export const AppProvider = ({ children }) => {
       // Add whatever artist recommendations we got
       if (recommendedSongs.length > 0) {
         addToQueue(recommendedSongs, "home");
-        showToast(
-          `Added ${recommendedSongs.length} songs from artists, fetching more...`
-        );
+        // showToast(
+        //   `Added ${recommendedSongs.length} songs from artists, fetching more...`
+        // );
       }
 
       // Then fetch AI recommendations to fill the gap
@@ -625,7 +647,7 @@ Output Format (strictly follow):
 
       if (foundSongs.length > 0) {
         addToQueue(foundSongs, "home");
-        showToast(`Added ${foundSongs.length} AI recommended songs`);
+        // showToast(`Added ${foundSongs.length} AI recommended songs`);
       }
     } catch (error) {
       console.error("AI Recommendation fallback error:", error);
@@ -640,6 +662,20 @@ Output Format (strictly follow):
   const truncateText = (text, maxLength) => {
     if (!text) return "";
     return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+  };
+
+  const loadPlaylist = (playlistData) => {
+    if (
+      !playlistData ||
+      !playlistData.tracks ||
+      !Array.isArray(playlistData.tracks)
+    ) {
+      showToast("Invalid playlist data");
+      return;
+    }
+
+    setCurrentPlaylist(playlistData);
+    showToast(`Loaded playlist: ${playlistData.name || "Untitled"}`);
   };
 
   return (
@@ -676,6 +712,10 @@ Output Format (strictly follow):
         fetchAIRecommendations,
         showToast,
         decodeHtmlEntities,
+        normalizeSongData,
+        currentPlaylist,
+        setCurrentPlaylist,
+        loadPlaylist,
       }}
     >
       {children}
