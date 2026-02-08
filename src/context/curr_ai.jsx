@@ -1,48 +1,54 @@
-const fetchAIRecommendations = async (queue) => {
-    console.log("AI recommendation triggered");
+const fetchAIRecommendations = async (currentQueue) => {
+    console.log("AI recommendation fallback triggered");
 
-    const listenedSongs = queue.filter((t) => t.listenedTo);
+    const listenedSongs = currentQueue.filter(
+      (t) => t.listenedTo && t.source === "home"
+    );
     if (listenedSongs.length === 0) {
-      console.log("No songs listened to yet, skipping AI call.");
+      console.log(
+        "No songs listened to yet from home source, skipping AI fallback."
+      );
       return;
     }
 
     try {
-      const apiKey = import.meta.env.VITE_TOGETHER_API_KEY;
+      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+      if (!apiKey) {
+        console.log("No AI API key found, skipping AI recommendations");
+        return;
+      }
 
       const referenceSection = listenedSongs
+        .slice(-3) // last 3 songs
         .map((t) => `${t.name} - ${t.primaryArtists}`)
         .join("\n");
 
-      const excludeSection = queue
+      const excludeSection = currentQueue
         .map((t) => `${t.name} - ${t.primaryArtists}`)
         .join("\n");
 
-      const prompt =
-`You are a smart music recommendation AI.
+      const prompt = `You are a music recommendation AI.
 
-The user has liked these songs:
+The user has recently listened to these songs:
 ${referenceSection}
 
-Do not recommend any of these:
+Do not recommend any of these (already in queue):
 ${excludeSection}
 
 Your task:
-Recommend 5 *popular and widely liked* songs that match the mood, genre, and language of the songs above.
+- Identify the genres, mood, and *era* (decade/year) of the recent songs.
+- Recommend 3 popular songs that match the same vibe and era, or from closely related genres/artists that the listener is likely to enjoy.
+- Prioritize songs from a similar time period (if the user is listening to older music, suggest more from that era).
+- Avoid suggesting extremely obscure songs — keep them recognizable but still fresh.
 
-Important:
-- Only include artists who are well-known and have **several popular tracks**, not just one viral or trending song.
-- Avoid artists who are known for only a single hit.
-- You can include repeated artists **only if they meet the above criteria**.
-- Do NOT include obscure or niche artists or songs.
-
-Format:
+Output Format (strictly follow):
 1. Song Name - Artist
-2. ...
-`;
-            
+2. Song Name - Artist
+3. Song Name - Artist`;
+
+      // ✅ OpenRouter request
       const response = await fetch(
-        "https://api.together.xyz/v1/chat/completions",
+        "https://openrouter.ai/api/v1/chat/completions",
         {
           method: "POST",
           headers: {
@@ -50,9 +56,9 @@ Format:
             Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
-            model: "mistralai/Mistral-7B-Instruct-v0.2",
+            "model": "openrouter/free",
             messages: [{ role: "user", content: prompt }],
-            max_tokens: 200,
+            max_tokens: 120,
             temperature: 0.7,
           }),
         }
@@ -74,41 +80,100 @@ Format:
           }
           return null;
         })
-        .filter(Boolean);
+        .filter(Boolean)
+        .slice(0, 3);
 
       console.log("AI Recommendations:", recommendations);
 
-      for (const rec of recommendations) {
-        // Search only by song name first
-        let res = await fetch(
-          `${
-            import.meta.env.VITE_APP_API_URL
-          }/search/songs?query=${encodeURIComponent(rec.name)}&limit=1`
-        );
-        let json = await res.json();
+      if (recommendations.length === 0) {
+        console.log("No valid AI recommendations parsed");
+        return;
+      }
 
-        // Fallback: try with artist name if not found
-        if (!json?.data?.results?.length) {
-          res = await fetch(
+      // Search for each AI recommendation
+      const foundSongs = [];
+      for (const rec of recommendations) {
+        try {
+          const res = await fetch(
             `${
               import.meta.env.VITE_APP_API_URL
             }/search/songs?query=${encodeURIComponent(
-              `${rec.name} ${rec.artist}`
+              rec.name + " " + rec.artist
             )}&limit=1`
           );
-          json = await res.json();
-        }
+          const json = await res.json();
+          const candidates = json?.data?.results || [];
 
-        const song = json?.data?.results?.[0];
-        if (song) {
-          setQueue((prev) => {
-            const exists = prev.some((s) => s.id === song.id);
-            return exists ? prev : [...prev, { ...song, listenedTo: false }];
-          });
+          if (candidates.length > 0) {
+            const song = candidates[0];
+            const exists = currentQueue.some((s) => s.id === song.id);
+            if (!exists) {
+              foundSongs.push({
+                ...song,
+                listenedTo: false,
+                isCurrentlyPlaying: false,
+                source: "home",
+              });
+            }
+          }
+        } catch (error) {
+          console.error(
+            `Error searching for ${rec.name} - ${rec.artist}:`,
+            error
+          );
         }
       }
+
+      if (foundSongs.length > 0) {
+        addToQueue(foundSongs, "home");
+        // showToast(`Added ${foundSongs.length} AI recommended songs`);
+      }
     } catch (error) {
-      console.error("AI Recommendation error:", error);
-      showToast("Failed to fetch AI recommendations.");
+      console.error("AI Recommendation fallback error:", error);
+      showToast("Could not fetch additional recommendations");
     }
   };
+
+
+
+
+  _________________________________________________________
+
+  current prompt
+
+const prompt = `You are a music recommendation engine inside a streaming app.
+
+IMPORTANT BEHAVIOR RULES:
+- Do NOT explain your reasoning.
+- Do NOT show analysis, thoughts, or decision steps.
+- Do NOT output anything except the final song list.
+
+Context:
+The user has recently listened to the following songs (most recent first):
+${referenceSection}
+
+These songs are already in the queue and MUST NOT be recommended again:
+${excludeSection}
+
+Your goal:
+Recommend exactly 3 songs the user is very likely to enjoy next.
+
+How to decide (internal only):
+- Infer the dominant GENRES, MOOD, ENERGY LEVEL, and ERA (decade / general time period).
+- Stay close to the same era and vibe unless a very natural adjacent suggestion fits better.
+- Prefer popular or well-known songs over obscure picks.
+- Artist familiarity is good, but avoid repeating the same artist too much.
+- Avoid remixes, live versions, covers, or alternate versions.
+
+Hard rules:
+- NEVER recommend a song listed above.
+- Output MUST contain exactly 3 items.
+- Follow the output format exactly.
+- No extra text before or after the list.
+
+Output format (strict):
+1. Song Name - Artist
+2. Song Name - Artist
+3. Song Name - Artist
+
+If unsure, choose safe, widely-liked songs that fit the inferred vibe.`;

@@ -548,24 +548,43 @@ export const AppProvider = ({ children }) => {
         .map((t) => `${t.name} - ${t.primaryArtists}`)
         .join("\n");
 
-      const prompt = `You are a music recommendation AI.
+      const prompt = `You are a music recommendation engine inside a streaming app.
 
-The user has recently listened to these songs:
+IMPORTANT BEHAVIOR RULES:
+- Do NOT explain your reasoning.
+- Do NOT show analysis, thoughts, or decision steps.
+- Do NOT output anything except the final song list.
+
+Context:
+The user has recently listened to the following songs (most recent first):
 ${referenceSection}
 
-Do not recommend any of these (already in queue):
+These songs are already in the queue and MUST NOT be recommended again:
 ${excludeSection}
 
-Your task:
-- Identify the genres, mood, and *era* (decade/year) of the recent songs.
-- Recommend 3 popular songs that match the same vibe and era, or from closely related genres/artists that the listener is likely to enjoy.
-- Prioritize songs from a similar time period (if the user is listening to older music, suggest more from that era).
-- Avoid suggesting extremely obscure songs — keep them recognizable but still fresh.
+Your goal:
+Recommend exactly 3 songs the user is very likely to enjoy next.
 
-Output Format (strictly follow):
+How to decide (internal only):
+- Infer the dominant GENRES, MOOD, ENERGY LEVEL, and ERA (decade / general time period).
+- Stay close to the same era and vibe unless a very natural adjacent suggestion fits better.
+- Prefer popular or well-known songs over obscure picks.
+- Artist familiarity is good, but avoid repeating the same artist too much.
+- Avoid remixes, live versions, covers, or alternate versions.
+
+Hard rules:
+- NEVER recommend a song listed above.
+- Output MUST contain exactly 3 items.
+- Follow the output format exactly.
+- No extra text before or after the list.
+
+Output format (strict):
 1. Song Name - Artist
 2. Song Name - Artist
-3. Song Name - Artist`;
+3. Song Name - Artist
+
+If unsure, choose safe, widely-liked songs that fit the inferred vibe.`;
+
 
       // ✅ OpenRouter request
       const response = await fetch(
@@ -577,7 +596,7 @@ Output Format (strictly follow):
             Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
-            model: "mistralai/mistral-7b-instruct:free",
+            "model": "openrouter/free",
             messages: [{ role: "user", content: prompt }],
             max_tokens: 120,
             temperature: 0.7,
