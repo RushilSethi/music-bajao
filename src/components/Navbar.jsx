@@ -284,7 +284,7 @@ const Navbar = ({ setTriggerFetch }) => {
                 padding: '10px 16px',
                 backdropFilter: 'blur(10px)',
                 transition: 'all 0.3s ease',
-                minWidth: '280px'
+                // minWidth: '280px'
               }}
               onFocus={(e) => {
                 e.target.style.border = '1px solid rgba(255, 133, 27, 0.5)';
